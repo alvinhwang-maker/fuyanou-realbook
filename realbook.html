@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Real Book — Song Index</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Real Book">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  :root{
+    --bg:#F7F4EC; --card:#FFFFFF; --ink:#2C2A26; --ink2:#6B6558; --line:#E2DBCD;
+    --accent:#C2703F; --accent2:#F0E2D6; --chip:#FFFDF8;
+  }
+  html,body{margin:0;padding:0}
+  body{
+    background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    font-size:17px; line-height:1.45;
+    padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:20px 16px 90px}
+  .hdrow{display:flex;align-items:center;gap:12px;margin:6px 0 2px}
+  .hdrow h1{flex:1;min-width:0}
+  .hdrow .chip{margin-top:2px}
+  h1{font-size:32px;margin:6px 0 2px;letter-spacing:-.4px;font-weight:900}
+  .sub{color:var(--ink2);font-size:16px;margin:0 0 18px}
+  /* --- one control per row, roomy --- */
+  .row{margin:0 0 14px}
+  #q{
+    width:100%;font:inherit;font-size:19px;padding:17px 20px;border-radius:20px;
+    border:2px solid var(--line);background:var(--card);color:var(--ink);outline:none;
+  }
+  #q:focus{border-color:var(--accent)}
+  .chips{display:flex;gap:9px;overflow-x:auto;padding:2px 0 4px;-webkit-overflow-scrolling:touch}
+  .chips::-webkit-scrollbar{display:none}
+  .chip{
+    flex:0 0 auto;font:inherit;font-size:16px;font-weight:800;color:var(--ink);
+    background:var(--card);border:2px solid var(--line);border-radius:999px;
+    padding:9px 16px;cursor:pointer;white-space:nowrap;
+  }
+  .chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+  .lbl{font-size:14px;font-weight:800;color:var(--ink2);letter-spacing:.06em;text-transform:uppercase;margin:0 0 6px}
+  .card{
+    background:var(--card);border:2px solid var(--line);border-radius:22px;
+    padding:16px 18px;margin:0 0 12px;cursor:pointer;display:flex;gap:14px;align-items:flex-start;
+  }
+  .card:active{transform:scale(.988)}
+  .nm{font-size:21px;font-weight:900;letter-spacing:-.2px;margin:0 0 4px}
+  .meta{font-size:16px;color:var(--ink2);margin:0}
+  .meta b{color:var(--ink);font-weight:800}
+  .tags{display:flex;flex-wrap:wrap;gap:7px;margin-top:9px}
+  .tag{
+    font-size:14px;font-weight:800;background:var(--accent2);color:#8A4A22;
+    border-radius:999px;padding:4px 11px;
+  }
+  .tag.add{background:transparent;border:2px dashed var(--line);color:var(--ink2)}
+  .pg{
+    flex:0 0 auto;font-size:15px;font-weight:900;color:var(--accent);
+    background:var(--accent2);border-radius:14px;padding:7px 11px;min-width:52px;text-align:center;
+  }
+  .bk{
+    display:inline-block;font-size:13px;font-weight:800;color:var(--ink2);
+    background:var(--chip);border:2px solid var(--line);border-radius:999px;
+    padding:3px 10px;margin-top:8px;
+  }
+  .empty{color:var(--ink2);font-size:17px;padding:30px 4px;text-align:center}
+  /* --- viewer --- */
+  #view{position:fixed;inset:0;background:#1B1A17;z-index:50;display:none;flex-direction:column}
+  #view.open{display:flex}
+  .bar{
+    display:flex;align-items:center;gap:10px;padding:10px 12px;
+    padding-top:calc(10px + env(safe-area-inset-top));
+    background:#232019;color:#F4EFE5;flex:0 0 auto;
+  }
+  .bar .t{flex:1;min-width:0;font-size:17px;font-weight:900;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .bar .s{font-size:13px;font-weight:700;color:#B5AC9C;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .btn{
+    font:inherit;font-size:16px;font-weight:900;background:#332F26;color:#F4EFE5;border:0;
+    border-radius:14px;padding:10px 15px;cursor:pointer;flex:0 0 auto;
+  }
+  .btn:disabled{opacity:.35}
+  .btn.go{background:var(--accent);color:#fff}
+  #stage{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;text-align:center;background:#1B1A17}
+  #stage img{max-width:100%;display:block;margin:0 auto}
+  /* Tags and notes share ONE panel that starts hidden — the sheet needs the space. */
+  .tagbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+  .btn.has{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .tagbar .tag{background:#3A3428;color:#F0E2D6}
+  .tagbar .tag b{color:#E8A87C;margin-left:6px}
+  .tagbar input{
+    font:inherit;font-size:16px;background:#332F26;border:2px solid #4A4436;border-radius:14px;
+    color:#F4EFE5;padding:9px 13px;outline:none;min-width:150px;flex:1;
+  }
+  .tagbar input:focus{border-color:var(--accent)}
+  /* --- notes (yours, stored locally) --- */
+  .notebar{
+    display:flex;flex-direction:column;gap:8px;padding:10px 12px;background:#232019;
+    flex:0 0 auto;padding-bottom:calc(10px + env(safe-area-inset-bottom));
+  }
+  /* CRITICAL: .notebar sets display:flex, and an explicit display BEATS the browser's
+     [hidden]{display:none} rule — so without this the panel was permanently visible and
+     the ✎ toggle did nothing. Attribute selector wins on specificity, no !important needed. */
+  .notebar[hidden]{display:none}
+  /* Identified chords: an OVERLAY pinned to the bottom of the sheet, so comparing against
+     the chart costs no screen space until it is tapped. */
+  .chordpop{
+    position:absolute;left:0;right:0;bottom:0;z-index:6;
+    background:rgba(24,23,20,.95);color:#F4EFE5;
+    padding:12px 14px calc(12px + env(safe-area-inset-bottom));
+    max-height:45%;overflow:auto;-webkit-overflow-scrolling:touch;
+    box-shadow:0 -6px 24px rgba(0,0,0,.45);
+  }
+  .chordpop[hidden]{display:none}
+  .cpophead{font-size:14px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;
+            color:#E8A87C;margin:0 0 8px}
+  .cpoplist{font-size:19px;font-weight:800;line-height:1.65;word-spacing:10px;margin:0}
+  .cpopnote{font-size:13px;color:#B5AC9C;margin:8px 0 0}
+  .notebar textarea{
+    font:inherit;font-size:16px;line-height:1.4;background:#332F26;border:2px solid #4A4436;
+    border-radius:14px;color:#F4EFE5;padding:11px 13px;outline:none;resize:vertical;
+    min-height:64px;width:100%;
+  }
+  .notebar textarea:focus{border-color:var(--accent)}
+  .noterow{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .nhint{font-size:13px;font-weight:700;color:#8E8778;flex:1;min-width:80px}
+  .nhint.ok{color:#9CC79C}
+  .btn.sm{font-size:14px;padding:8px 12px}
+  .notemark{font-size:15px;font-weight:900;color:var(--accent);margin-left:8px}
+  .noteprev{
+    font-size:15px;color:var(--ink2);margin:7px 0 0;padding-left:10px;
+    border-left:3px solid var(--accent2);white-space:pre-wrap;
+  }
+  /* chord symbols pulled off the scan — dense label, one line, truncates */
+  .chords{
+    font-size:14px;font-weight:800;color:var(--ink2);margin:6px 0 0;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hdrow">
+    <h1>🎷 Real Book</h1>
+    <button class="chip" id="langbtn">中文</button>
+  </div>
+  <p class="sub" id="sub">Loading…</p>
+
+  <div class="row"><input id="q" type="search" placeholder="Search title, composer, key, #tag or your note…" autocomplete="off" autocorrect="off" spellcheck="false"></div>
+
+  <div class="row">
+    <p class="lbl" id="lblSort">Sort by</p>
+    <div class="chips" id="sorts"></div>
+  </div>
+
+  <div class="row" id="bookrow" hidden>
+    <p class="lbl" id="lblBook">Real book</p>
+    <div class="chips" id="bookfilters"></div>
+  </div>
+
+  <div class="row" id="tagfilterrow" hidden>
+    <p class="lbl" id="lblMarks">Your tags &amp; notes</p>
+    <div class="chips" id="tagfilters"></div>
+  </div>
+
+  <div id="list"></div>
+  <p class="empty" id="none" hidden>No song matches that.</p>
+</div>
+
+<div id="view">
+  <div class="bar">
+    <button class="btn" id="vclose">✕</button>
+    <div style="flex:1;min-width:0">
+      <div class="t" id="vtitle">—</div>
+      <div class="s" id="vsub">—</div>
+    </div>
+    <button class="btn" id="vchords" title="Identified chords" hidden>♯</button>
+    <button class="btn" id="vnote" title="Your note &amp; tags">✎</button>
+    <button class="btn" id="vprev">◀</button>
+    <button class="btn" id="vnext">▶</button>
+  </div>
+  <div id="stage"><img id="vimg" alt="song page"></div>
+  <div class="notebar" id="notebar" hidden>
+    <div class="tagbar">
+      <input id="tagin" type="text" placeholder="add a #tag…" autocapitalize="none" autocorrect="off" spellcheck="false">
+      <button class="btn go" id="tagadd">Add</button>
+    </div>
+    <textarea id="notein" placeholder="Write a note about this tune — what to work on, who calls it, the version you like…" autocapitalize="sentences"></textarea>
+    <div class="noterow">
+      <span class="nhint" id="nstat"></span>
+      <button class="btn sm" id="expbtn">⤓ Export all</button>
+      <button class="btn sm" id="impbtn">⤒ Import</button>
+      <input id="impfile" type="file" accept="application/json,.json" hidden>
+    </div>
+  </div>
+
+  <div class="chordpop" id="chordpop" hidden>
+    <p class="cpophead" id="cpoph"></p>
+    <p class="cpoplist" id="cpopl"></p>
+    <p class="cpopnote" id="cpopn"></p>
+  </div>
+</div>
+
+<script>
+(function(){
+  var SONGS = [], ALL = [], sortKey = 'title', tagFilter = '', bookFilter = '', songs = [];
+
+  /* ---------------------------------------------------------------------------
+     CHORDS: HIDDEN FOR NOW.
+     The OCR-extracted chords are judged unreliable in practice (real check against the
+     charts on 2026-10-03: "mostly wrong" — note that spot-checking a few pages by eye had
+     suggested far better precision than the corpus actually has). The data is still
+     extracted and still present in realbook.json, so this one flag brings the entire
+     feature back: the chord line on the cards, the ♯ overlay in the viewer, and chord
+     terms in the search index.
+     --------------------------------------------------------------------------- */
+  var SHOW_CHORDS = false;
+  var TAGS = JSON.parse(localStorage.getItem('rbk.tags') || '{}');
+  var NOTES = JSON.parse(localStorage.getItem('rbk.notes') || '{}');
+  var noteOnly = false;
+  var q = document.getElementById('q'), list = document.getElementById('list'), none = document.getElementById('none');
+
+  function saveTags(){ localStorage.setItem('rbk.tags', JSON.stringify(TAGS)); }
+  function tagsOf(s){ return TAGS[s.id] || []; }
+  function saveNotes(){ localStorage.setItem('rbk.notes', JSON.stringify(NOTES)); }
+  function noteOf(s){ return (NOTES[s.id] || '').toString(); }
+  function hasMarks(s){ return !!(noteOf(s).trim() || tagsOf(s).length); }
+
+  /* ---------- i18n: English / 中文 ----------
+     Only the app's own chrome is translated. Song titles, composer names and the
+     style markings read off the scans are DATA and are never translated, and neither
+     are the book names (Real Book 5th Ed, The New Real Book …) — they are titles. */
+  var LANG = localStorage.getItem('rbk.lang') || 'en';
+  var S = {
+    en: {
+      search: 'Search title, composer, key, #tag or your note…',
+      sortBy: 'Sort by', bookLbl: 'Real book', marksLbl: 'Your tags & notes',
+      allBooks: 'All books', mine: '✎ mine',
+      sTitle: '🔤 Title', sComposer: '✍️ Composer', sKey: '🎼 Key',
+      sBook: '📚 Book', sPage: '📄 Page #',
+      none: 'No song matches that.',
+      composerUnknown: 'composer unknown', keyUnknown: 'key unknown',
+      addTag: 'add a #tag…', add: 'Add', noteTitle: 'Your note & tags',
+      chordsHead: 'Identified chords', chordsBtn: 'Identified chords',
+      chordsApprox: 'approximate — hand-written source', chordsExact: 'typeset source',
+      chordsNote: 'Read off the page by OCR. The list is usually partial — compare it with the sheet.',
+      notePh: 'Write a note about this tune — what to work on, who calls it, the version you like…',
+      saved: 'saved', savedOk: 'saved ✓', editing: 'editing…',
+      exportAll: '⤓ Export all', importBtn: '⤒ Import', langBtn: '中文',
+      pageFmt: function(n){ return 'p.' + n; },
+      appPageFmt: function(n){ return 'app. p.' + n; },
+      pageLongFmt: function(n){ return 'page ' + n; },
+      appPageLongFmt: function(n){ return 'app. page ' + n; },
+      subFmt: function(a, b){ return a + ' tunes · ' + b + ' books · tap a song to open its page'; },
+      expDone: function(n, t2){ return 'exported ' + n + ' notes, ' + t2 + ' tagged tunes'; },
+      impDone: function(n, t2){ return 'imported ' + n + ' notes, ' + t2 + ' tags'; },
+      impFail: function(m){ return 'import failed — ' + m; },
+      loading: 'Loading…',
+      loadFail: function(e){ return 'Could not load realbook.json — ' + e; }
+    },
+    zh: {
+      search: '搜尋曲名、作曲、調性、#標籤或筆記…',
+      sortBy: '排序', bookLbl: '樂譜集', marksLbl: '我的標籤與筆記',
+      allBooks: '全部樂譜集', mine: '✎ 我的',
+      sTitle: '🔤 曲名', sComposer: '✍️ 作曲', sKey: '🎼 調性',
+      sBook: '📚 樂譜集', sPage: '📄 頁碼',
+      none: '沒有符合的曲目。',
+      composerUnknown: '作曲未知', keyUnknown: '調性未知',
+      addTag: '新增 #標籤…', add: '新增', noteTitle: '我的筆記與標籤',
+      chordsHead: '辨識出的和弦', chordsBtn: '辨識出的和弦',
+      chordsApprox: '近似值 — 手寫原稿', chordsExact: '印刷原稿',
+      chordsNote: '由 OCR 從樂譜頁讀取。清單通常不完整 — 請與樂譜頁比對。',
+      notePh: '寫下關於這首曲子的筆記——要練什麼、誰常點、喜歡的版本…',
+      saved: '已儲存', savedOk: '已儲存 ✓', editing: '編輯中…',
+      exportAll: '⤓ 匯出全部', importBtn: '⤒ 匯入', langBtn: 'EN',
+      pageFmt: function(n){ return '第' + n + '頁'; },
+      appPageFmt: function(n){ return '附錄 第' + n + '頁'; },
+      pageLongFmt: function(n){ return '第' + n + '頁'; },
+      appPageLongFmt: function(n){ return '附錄 第' + n + '頁'; },
+      subFmt: function(a, b){ return a + ' 首 · ' + b + ' 本樂譜集 · 點擊曲目開啟樂譜頁'; },
+      expDone: function(n, t2){ return '已匯出 ' + n + ' 則筆記、' + t2 + ' 首有標籤'; },
+      impDone: function(n, t2){ return '已匯入 ' + n + ' 則筆記、' + t2 + ' 個標籤'; },
+      impFail: function(m){ return '匯入失敗 — ' + m; },
+      loading: '載入中…',
+      loadFail: function(e){ return '無法載入 realbook.json — ' + e; }
+    }
+  };
+  function t(k){ return S[LANG][k]; }
+
+  // musically sensible key ordering: root pitch class then mode
+  var ROOT = {'C':0,'C#':1,'Db':1,'D':2,'D#':3,'Eb':3,'E':4,'F':5,'F#':6,'Gb':6,'G':7,'G#':8,'Ab':8,'A':9,'A#':10,'Bb':10,'B':11};
+  function keyOrder(k){
+    if(!k) return [99,99,99];
+    var minor = /minor/i.test(k);
+    var m = k.match(/([A-G][#b]?)/);
+    var pc = m ? ROOT[m[1]] : 99;
+    return [pc === undefined ? 99 : pc, minor ? 1 : 0, 0];
+  }
+
+  function norm(x){ return (x||'').toString().toLowerCase(); }
+
+  function haystack(s){
+    return [s.title, s.composer, s.key, s.style, s.keySig, s.bookLabel, s.book,
+            tagsOf(s).join(' '), noteOf(s),
+            (SHOW_CHORDS ? (s.chords || []).join(' ') : '')].map(norm).join(' | ');
+  }
+
+  function apply(){
+    var term = norm(q.value.trim());
+    var f = term.replace(/^#/, '');
+    var hashtag = term.charAt(0) === '#';
+    var out = ALL.filter(function(s){
+      if(tagFilter && tagsOf(s).indexOf(tagFilter) < 0) return false;
+      if(bookFilter && s.book !== bookFilter) return false;
+      if(noteOnly && !hasMarks(s)) return false;
+      if(!f) return true;
+      if(hashtag) return tagsOf(s).some(function(t){ return norm(t).indexOf(f) >= 0; });
+      return haystack(s).indexOf(f) >= 0;
+    });
+    out.sort(function(a,b){
+      if(sortKey === 'title')    return (a.sortTitle||'').localeCompare(b.sortTitle||'');
+      if(sortKey === 'composer') return (norm(a.composer)||'zzz').localeCompare(norm(b.composer)||'zzz') || (a.sortTitle||'').localeCompare(b.sortTitle||'');
+      if(sortKey === 'book')     return (a.bookOrder||0) - (b.bookOrder||0) || (a.sortTitle||'').localeCompare(b.sortTitle||'');
+      if(sortKey === 'page')     return (a.bookOrder||0) - (b.bookOrder||0) || (a.pdf||9999) - (b.pdf||9999);
+      if(sortKey === 'key'){
+        var ka = keyOrder(a.key), kb = keyOrder(b.key);
+        return ka[0]-kb[0] || ka[1]-kb[1] || (a.sortTitle||'').localeCompare(b.sortTitle||'');
+      }
+      return 0;
+    });
+    songs = out;
+    render();
+  }
+
+  function esc(t){ return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+  function render(){
+    var html = songs.map(function(s, i){
+      var tagHtml = tagsOf(s).map(function(x){ return '<span class="tag">#'+esc(x)+'</span>'; }).join('');
+      var nt = noteOf(s).trim();
+      return '<div class="card" data-i="'+i+'">'+
+        '<div style="flex:1;min-width:0">'+
+          '<div class="nm">'+esc(s.title)+(nt ? '<span class="notemark">✎</span>' : '')+'</div>'+
+          '<p class="meta">'+[esc(s.composer||t('composerUnknown')), esc(s.key||t('keyUnknown'))].join(' · ')+'</p>'+
+          '<div class="bk">'+esc(s.bookLabel||'')+'</div>'+
+          (SHOW_CHORDS && s.chords && s.chords.length ? '<div class="chords">'+esc((s.chordsApprox ? '≈ ' : '') + s.chords.slice(0,14).join(' '))+'</div>' : '')+
+          (nt ? '<p class="noteprev">'+esc(nt.length > 220 ? nt.slice(0, 220) + '…' : nt)+'</p>' : '')+
+          '<div class="tags">'+tagHtml+'</div>'+
+        '</div>'+
+        '<div class="pg">'+ (s.page!=null ? (s.appendix ? t('appPageFmt')(s.page) : t('pageFmt')(s.page)) : '—') +'</div>'+
+      '</div>';
+    }).join('');
+    list.innerHTML = html;
+    none.hidden = songs.length > 0;
+  }
+
+  list.addEventListener('click', function(e){
+    var c = e.target.closest('.card');
+    if(c) openView(parseInt(c.dataset.i, 10));
+  });
+
+  /* ---------- viewer ---------- */
+  var view = document.getElementById('view'), vimg = document.getElementById('vimg');
+  var vtitle = document.getElementById('vtitle'), vsub = document.getElementById('vsub');
+  var idx = -1;
+
+  function openView(i){
+    idx = i;
+    var s = songs[i]; if(!s) return;
+    vtitle.textContent = s.title;
+    vsub.textContent = [s.bookLabel, s.composer, s.key, s.page!=null ? (s.appendix ? t('appPageLongFmt')(s.page) : t('pageLongFmt')(s.page)) : null].filter(Boolean).join(' · ');
+    vimg.src = s.pdf ? ('pages/' + (s.book || '5th') + '/' + String(s.pdf).padStart(4,'0') + '.jpg') : '';
+    view.classList.add('open');
+    renderTagbar();
+    renderNote();
+    document.getElementById('stage').scrollTop = 0;
+    var vc = document.getElementById('vchords');
+    // only offer it when chords are enabled AND this song has some
+    vc.hidden = !(SHOW_CHORDS && s.chords && s.chords.length);
+    vc.title = t('chordsBtn');
+    hideChords();
+    document.getElementById('vprev').disabled = i <= 0;
+    document.getElementById('vnext').disabled = i >= songs.length - 1;
+  }
+  function closeView(){
+    view.classList.remove('open');
+    vimg.src = '';
+    // collapse the tags/notes panel and the chord overlay: both start hidden and should
+    // not stay open (and eat the sheet space) the next time a song is opened
+    var nb = document.getElementById('notebar');
+    nb.hidden = true;
+    document.getElementById('vnote').classList.remove('go');
+    hideChords();
+  }
+  function step(d){ var n = idx + d; if(n >= 0 && n < songs.length) openView(n); }
+
+  document.getElementById('vclose').onclick = closeView;
+  document.getElementById('vprev').onclick = function(){ step(-1); };
+  document.getElementById('vnext').onclick = function(){ step(1); };
+  document.addEventListener('keydown', function(e){
+    if(!view.classList.contains('open')) return;
+    if(e.key === 'Escape') closeView();
+    if(e.key === 'ArrowLeft') step(-1);
+    if(e.key === 'ArrowRight') step(1);
+  });
+
+  var tagin = document.getElementById('tagin');
+  // Light up ✎ when this song already has a note or tags, so the panel being hidden
+  // never hides the fact that you wrote something.
+  function updateNoteBtn(){
+    var s = songs[idx]; if(!s) return;
+    document.getElementById('vnote').classList.toggle('has', hasMarks(s));
+  }
+  function renderTagbar(){
+    var s = songs[idx]; if(!s) return;
+    var box = document.querySelector('.tagbar');
+    box.querySelectorAll('.tag').forEach(function(n){ n.remove(); });
+    tagsOf(s).forEach(function(t){
+      var b = document.createElement('button');
+      b.className = 'tag';
+      b.innerHTML = '#' + esc(t) + ' <b>×</b>';
+      b.onclick = function(){
+        TAGS[s.id] = tagsOf(s).filter(function(x){ return x !== t; });
+        if(!TAGS[s.id].length) delete TAGS[s.id];
+        saveTags(); renderTagbar(); buildTagFilters(); apply();
+      };
+      box.insertBefore(b, tagin);
+    });
+    updateNoteBtn();
+  }
+  function addTag(){
+    var s = songs[idx]; if(!s) return;
+    var t = norm(tagin.value.trim()).replace(/^#/, '').replace(/[^a-z0-9\-_ ]/g, '').trim();
+    if(!t) return;
+    if(tagsOf(s).indexOf(t) < 0) TAGS[s.id] = tagsOf(s).concat([t]);
+    saveTags(); tagin.value = ''; renderTagbar(); buildTagFilters(); apply();
+  }
+  document.getElementById('tagadd').onclick = addTag;
+  tagin.addEventListener('keydown', function(e){ if(e.key === 'Enter') addTag(); });
+
+  /* ---------- notes (yours, stored locally) ---------- */
+  var notebar = document.getElementById('notebar'), notein = document.getElementById('notein');
+  var nstat = document.getElementById('nstat'), noteTimer = null;
+
+  function renderNote(){
+    var s = songs[idx]; if(!s) return;
+    var v = noteOf(s);
+    notein.value = v;
+    nstat.textContent = v.trim() ? t('saved') : '';
+    nstat.className = 'nhint' + (v.trim() ? ' ok' : '');
+    updateNoteBtn();
+  }
+  function flushNote(){
+    var s = songs[idx]; if(!s) return;
+    var v = notein.value.replace(/\s+$/, '');
+    if(v.trim()) NOTES[s.id] = v; else delete NOTES[s.id];
+    saveNotes();
+    nstat.textContent = t('savedOk'); nstat.className = 'nhint ok';
+    render(); buildTagFilters(); updateNoteBtn();
+  }
+  notein.addEventListener('input', function(){
+    nstat.textContent = t('editing'); nstat.className = 'nhint';
+    clearTimeout(noteTimer);
+    noteTimer = setTimeout(flushNote, 500);
+  });
+  notein.addEventListener('blur', function(){ clearTimeout(noteTimer); flushNote(); });
+  document.getElementById('vnote').onclick = function(){
+    notebar.hidden = !notebar.hidden;
+    this.classList.toggle('go', !notebar.hidden);
+    // No autofocus: opening the panel would otherwise raise the keyboard and eat the
+    // space we just reclaimed. Tap the field you want instead.
+    if(!notebar.hidden) hideChords();   // never stack the two panels
+  };
+
+  /* ---------- identified chords: an overlay so you can compare against the sheet ----------
+     Deliberately an overlay rather than a panel: it floats over the bottom of the page
+     image, so comparing costs NO screen space and the chart stays fully visible above it. */
+  function showChords(){
+    var s = songs[idx];
+    if(!s || !(s.chords || []).length) return;
+    document.getElementById('cpoph').textContent = t('chordsHead') + ' — ' +
+      (s.chordsApprox ? t('chordsApprox') : t('chordsExact'));
+    document.getElementById('cpopl').textContent = s.chords.join('   ');
+    document.getElementById('cpopn').textContent = t('chordsNote');
+    document.getElementById('chordpop').hidden = false;
+    document.getElementById('vchords').classList.add('go');
+    notebar.hidden = true;
+    document.getElementById('vnote').classList.remove('go');
+  }
+  function hideChords(){
+    document.getElementById('chordpop').hidden = true;
+    document.getElementById('vchords').classList.remove('go');
+  }
+  document.getElementById('vchords').onclick = function(){
+    if(document.getElementById('chordpop').hidden) showChords(); else hideChords();
+  };
+
+  function exportAll(){
+    var data = {app:'realbook', version:1, exported:new Date().toISOString(),
+                tags:TAGS, notes:NOTES};
+    var blob = new Blob([JSON.stringify(data, null, 1)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'realbook-notes.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 3000);
+    nstat.textContent = t('expDone')(Object.keys(NOTES).length, Object.keys(TAGS).length);
+    nstat.className = 'nhint ok';
+  }
+  function importAll(file){
+    var rd = new FileReader();
+    rd.onload = function(){
+      try{
+        var d = JSON.parse(rd.result);
+        var nt = d.notes || {}, tg = d.tags || {};
+        var nA = 0, tA = 0;
+        Object.keys(nt).forEach(function(k){
+          if(!noteOf({id:k}).trim() && String(nt[k]).trim()){ NOTES[k] = nt[k]; nA++; }
+        });
+        Object.keys(tg).forEach(function(k){
+          var cur = TAGS[k] || [];
+          (tg[k] || []).forEach(function(t){ if(cur.indexOf(t) < 0){ cur.push(t); tA++; } });
+          if(cur.length) TAGS[k] = cur;
+        });
+        saveNotes(); saveTags();
+        renderNote(); renderTagbar(); buildTagFilters(); render();
+        nstat.textContent = t('impDone')(nA, tA);
+        nstat.className = 'nhint ok';
+      }catch(err){
+        nstat.textContent = t('impFail')(err.message);
+        nstat.className = 'nhint';
+      }
+    };
+    rd.readAsText(file);
+  }
+  document.getElementById('expbtn').onclick = exportAll;
+  document.getElementById('impbtn').onclick = function(){ document.getElementById('impfile').click(); };
+  document.getElementById('impfile').addEventListener('change', function(e){
+    var f = e.target.files && e.target.files[0];
+    if(f) importAll(f);
+    e.target.value = '';
+  });
+
+  /* ---------- sort chips + tag filters ---------- */
+  var SORTS = ['title','composer','key','book','page'];
+  function buildSorts(){
+    document.getElementById('sorts').innerHTML = SORTS.map(function(k){
+      return '<button class="chip'+(k===sortKey?' on':'')+'" data-s="'+k+'">'+
+             t('s' + k.charAt(0).toUpperCase() + k.slice(1))+'</button>';
+    }).join('');
+  }
+  buildSorts();
+  document.getElementById('sorts').addEventListener('click', function(e){
+    var b = e.target.closest('.chip'); if(!b) return;
+    sortKey = b.dataset.s;
+    [].slice.call(this.children).forEach(function(c){ c.classList.toggle('on', c === b); });
+    apply();
+  });
+
+  /* ---------- book filter chips ---------- */
+  var BOOKS = [];
+  function buildBookFilters(){
+    if(BOOKS.length < 2){ return; }              // single-book library: no filter row
+    document.getElementById('bookrow').hidden = false;
+    var counts = {};
+    ALL.forEach(function(s){ counts[s.book] = (counts[s.book]||0) + 1; });
+    var html = '<button class="chip'+(bookFilter===''?' on':'')+'" data-b="">'+esc(t('allBooks'))+' <span style="opacity:.6">'+ALL.length+'</span></button>';
+    BOOKS.forEach(function(b){
+      html += '<button class="chip'+(bookFilter===b.id?' on':'')+'" data-b="'+esc(b.id)+'">'
+            + esc(b.label) + ' <span style="opacity:.6">' + (counts[b.id]||0) + '</span></button>';
+    });
+    document.getElementById('bookfilters').innerHTML = html;
+  }
+  document.getElementById('bookfilters').addEventListener('click', function(e){
+    var b = e.target.closest('.chip'); if(!b) return;
+    bookFilter = b.dataset.b;
+    buildBookFilters(); apply();
+  });
+
+  function buildTagFilters(){
+    var all = {};
+    Object.keys(TAGS).forEach(function(k){ (TAGS[k]||[]).forEach(function(t){ all[t] = (all[t]||0)+1; }); });
+    var names = Object.keys(all).sort();
+    var nMarked = ALL.filter(hasMarks).length;
+    var row = document.getElementById('tagfilterrow');
+    row.hidden = (names.length === 0 && nMarked === 0);
+    var html = '';
+    if(nMarked){
+      html += '<button class="chip'+(noteOnly?' on':'')+'" data-m="1">'+esc(t('mine'))+' <span style="opacity:.6">'+nMarked+'</span></button>';
+    }
+    html += names.map(function(tag){
+      return '<button class="chip'+(tag===tagFilter?' on':'')+'" data-t="'+esc(tag)+'">#'+esc(tag)+' <span style="opacity:.6">'+all[tag]+'</span></button>';
+    }).join('');
+    document.getElementById('tagfilters').innerHTML = html;
+  }
+  document.getElementById('tagfilters').addEventListener('click', function(e){
+    var b = e.target.closest('.chip'); if(!b) return;
+    if(b.dataset.m){ noteOnly = !noteOnly; }
+    else { tagFilter = (tagFilter === b.dataset.t) ? '' : b.dataset.t; }
+    buildTagFilters(); apply();
+  });
+
+  q.addEventListener('input', apply);
+  q.addEventListener('search', apply);
+
+  function setSub(){
+    var nb = BOOKS.length || 1;
+    document.getElementById('sub').textContent = t('subFmt')(ALL.length, nb);
+  }
+
+  function applyLang(){
+    document.documentElement.lang = (LANG === 'zh' ? 'zh-Hant' : 'en');
+    document.getElementById('langbtn').textContent = t('langBtn');
+    q.placeholder = t('search');
+    document.getElementById('lblSort').textContent = t('sortBy');
+    document.getElementById('lblBook').textContent = t('bookLbl');
+    document.getElementById('lblMarks').textContent = t('marksLbl');
+    document.getElementById('none').textContent = t('none');
+    document.getElementById('tagin').placeholder = t('addTag');
+    document.getElementById('tagadd').textContent = t('add');
+    document.getElementById('vnote').title = t('noteTitle');
+    document.getElementById('vchords').title = t('chordsBtn');
+    // if the chord overlay is open, redraw it in the new language
+    if(!document.getElementById('chordpop').hidden) showChords();
+    document.getElementById('notein').placeholder = t('notePh');
+    document.getElementById('expbtn').textContent = t('exportAll');
+    document.getElementById('impbtn').textContent = t('importBtn');
+    buildSorts();
+    if(ALL.length){
+      buildBookFilters(); buildTagFilters(); setSub(); render();
+    } else {
+      document.getElementById('sub').textContent = t('loading');
+    }
+  }
+  document.getElementById('langbtn').onclick = function(){
+    LANG = (LANG === 'en' ? 'zh' : 'en');
+    localStorage.setItem('rbk.lang', LANG);
+    applyLang();
+  };
+  applyLang();
+
+  /* ---------- load ---------- */
+  fetch('realbook.json', {cache:'no-cache'}).then(function(r){ return r.json(); }).then(function(d){
+    BOOKS = (d.books || []).slice();
+    var order = {};
+    BOOKS.forEach(function(b, i){ order[b.id] = i; });
+    ALL = (d.songs || []).map(function(s, i){
+      s.id = s.id || ('s' + i);
+      s.sortTitle = (s.title || '').replace(/^(A|An|The)\s+/i, '').toLowerCase();
+      s.bookOrder = (order[s.book] === undefined ? 99 : order[s.book]);
+      return s;
+    });
+    buildBookFilters(); buildTagFilters(); setSub(); apply();
+  }).catch(function(err){
+    document.getElementById('sub').textContent = t('loadFail')(err);
+  });
+
+  if('serviceWorker' in navigator){
+    navigator.serviceWorker.register('sw.js').catch(function(){});
+  }
+})();
+</script>
+</body>
+</html>
