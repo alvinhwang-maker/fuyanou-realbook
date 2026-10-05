@@ -62,6 +62,7 @@
   .pg{
     flex:0 0 auto;font-size:15px;font-weight:900;color:var(--accent);
     background:var(--accent2);border-radius:14px;padding:7px 11px;min-width:52px;text-align:center;
+    white-space:nowrap;
   }
   .bk{
     display:inline-block;font-size:13px;font-weight:800;color:var(--ink2);
@@ -87,6 +88,13 @@
   .btn.go{background:var(--accent);color:#fff}
   #stage{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;text-align:center;background:#1B1A17}
   #stage img{max-width:100%;display:block;margin:0 auto}
+  /* Multi-page tunes: every page of the tune is stacked in #stage, and the seam between
+     pages carries a labelled divider so a 2nd/3rd sheet never reads as a new tune. */
+  #stage .pgsep{
+    font-size:13px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#8E8778;
+    background:#21201C;border-top:1px solid #35322A;border-bottom:1px solid #35322A;
+    padding:9px 12px;margin:0;
+  }
   /* Tags and notes share ONE panel that starts hidden — the sheet needs the space. */
   .tagbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
   .btn.has{background:var(--accent);color:#fff;border-color:var(--accent)}
@@ -183,7 +191,7 @@
     <button class="btn" id="vprev">◀</button>
     <button class="btn" id="vnext">▶</button>
   </div>
-  <div id="stage"><img id="vimg" alt="song page"></div>
+  <div id="stage"></div>
   <div class="notebar" id="notebar" hidden>
     <div class="tagbar">
       <input id="tagin" type="text" placeholder="add a #tag…" autocapitalize="none" autocorrect="off" spellcheck="false">
@@ -255,6 +263,11 @@
       appPageFmt: function(n){ return 'app. p.' + n; },
       pageLongFmt: function(n){ return 'page ' + n; },
       appPageLongFmt: function(n){ return 'app. page ' + n; },
+      pageRangeFmt: function(a, b){ return 'p.' + a + '–' + b; },
+      appPageRangeFmt: function(a, b){ return 'app. p.' + a + '–' + b; },
+      pageLongRangeFmt: function(a, b){ return 'pages ' + a + '–' + b; },
+      appPageLongRangeFmt: function(a, b){ return 'app. pages ' + a + '–' + b; },
+      contFmt: function(n){ return 'continued ▸ ' + n; },
       subFmt: function(a, b){ return a + ' tunes · ' + b + ' books · tap a song to open its page'; },
       expDone: function(n, t2){ return 'exported ' + n + ' notes, ' + t2 + ' tagged tunes'; },
       impDone: function(n, t2){ return 'imported ' + n + ' notes, ' + t2 + ' tags'; },
@@ -281,6 +294,11 @@
       appPageFmt: function(n){ return '附錄 第' + n + '頁'; },
       pageLongFmt: function(n){ return '第' + n + '頁'; },
       appPageLongFmt: function(n){ return '附錄 第' + n + '頁'; },
+      pageRangeFmt: function(a, b){ return '第' + a + '–' + b + '頁'; },
+      appPageRangeFmt: function(a, b){ return '附錄 第' + a + '–' + b + '頁'; },
+      pageLongRangeFmt: function(a, b){ return '第' + a + '–' + b + '頁'; },
+      appPageLongRangeFmt: function(a, b){ return '附錄 第' + a + '–' + b + '頁'; },
+      contFmt: function(n){ return '續 ▸ ' + n; },
       subFmt: function(a, b){ return a + ' 首 · ' + b + ' 本樂譜集 · 點擊曲目開啟樂譜頁'; },
       expDone: function(n, t2){ return '已匯出 ' + n + ' 則筆記、' + t2 + ' 首有標籤'; },
       impDone: function(n, t2){ return '已匯入 ' + n + ' 則筆記、' + t2 + ' 個標籤'; },
@@ -338,6 +356,22 @@
 
   function esc(t){ return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
+  /* A tune's pages = its own pdf page + any untitled continuation pages folded in at
+     extraction time (photo/section-divider pages are NOT continuations and are already
+     excluded from extraPages). Multi-page tunes therefore read as a RANGE, "p.112–113",
+     on the card and in the viewer bar, so the extra sheet is discoverable before opening. */
+  function songPages(s){ return [s.pdf].concat(s.extraPages || []).filter(function(p){ return !!p; }); }
+  function pageLabel(s, long){
+    if(s.page == null) return '';
+    var a = s.page, b = s.page + (s.extraPages || []).length;
+    if(b > a){
+      if(long) return s.appendix ? t('appPageLongRangeFmt')(a, b) : t('pageLongRangeFmt')(a, b);
+      return s.appendix ? t('appPageRangeFmt')(a, b) : t('pageRangeFmt')(a, b);
+    }
+    if(long) return s.appendix ? t('appPageLongFmt')(a) : t('pageLongFmt')(a);
+    return s.appendix ? t('appPageFmt')(a) : t('pageFmt')(a);
+  }
+
   function render(){
     var html = songs.map(function(s, i){
       var tagHtml = tagsOf(s).map(function(x){ return '<span class="tag">#'+esc(x)+'</span>'; }).join('');
@@ -351,7 +385,7 @@
           (nt ? '<p class="noteprev">'+esc(nt.length > 220 ? nt.slice(0, 220) + '…' : nt)+'</p>' : '')+
           '<div class="tags">'+tagHtml+'</div>'+
         '</div>'+
-        '<div class="pg">'+ (s.page!=null ? (s.appendix ? t('appPageFmt')(s.page) : t('pageFmt')(s.page)) : '—') +'</div>'+
+        '<div class="pg">'+ (s.page!=null ? pageLabel(s, false) : '—') +'</div>'+
       '</div>';
     }).join('');
     list.innerHTML = html;
@@ -364,16 +398,39 @@
   });
 
   /* ---------- viewer ---------- */
-  var view = document.getElementById('view'), vimg = document.getElementById('vimg');
+  var view = document.getElementById('view'), stage = document.getElementById('stage');
   var vtitle = document.getElementById('vtitle'), vsub = document.getElementById('vsub');
   var idx = -1;
 
+  /* Every page of the tune is rendered into #stage, in order, so a multi-page chart is read
+     by scrolling. Single-page tunes (the overwhelming majority) render exactly one <img>, so
+     nothing about them changes. */
+  function srcFor(s, p){
+    return (s && p) ? ('pages/' + (s.book || '5th') + '/' + String(p).padStart(4,'0') + '.jpg') : '';
+  }
+  /* Renders the sheet — subtitle + every page stacked — for one song. Keeps the current
+     scroll position, so re-rendering for a language switch does not throw the reader back
+     to the top of a multi-page chart. */
+  function renderSheet(s){
+    var keep = stage.scrollTop;
+    vtitle.textContent = s.title;
+    vsub.textContent = [s.bookLabel, s.composer, s.key, pageLabel(s, true)].filter(Boolean).join(' · ');
+    var pages = songPages(s), html = '';
+    for(var k = 0; k < pages.length; k++){
+      if(k > 0){
+        // printed page number of this continuation sheet, as a seam label
+        var pn = (s.page != null) ? (s.appendix ? t('appPageLongFmt')(s.page + k) : t('pageLongFmt')(s.page + k)) : '';
+        html += '<div class="pgsep">' + (pn ? t('contFmt')(pn) : '▸') + '</div>';
+      }
+      html += '<img src="' + esc(srcFor(s, pages[k])) + '" alt="">';
+    }
+    stage.innerHTML = html;
+    stage.scrollTop = keep;
+  }
   function openView(i){
     idx = i;
     var s = songs[i]; if(!s) return;
-    vtitle.textContent = s.title;
-    vsub.textContent = [s.bookLabel, s.composer, s.key, s.page!=null ? (s.appendix ? t('appPageLongFmt')(s.page) : t('pageLongFmt')(s.page)) : null].filter(Boolean).join(' · ');
-    vimg.src = s.pdf ? ('pages/' + (s.book || '5th') + '/' + String(s.pdf).padStart(4,'0') + '.jpg') : '';
+    renderSheet(s);
     view.classList.add('open');
     renderTagbar();
     renderNote();
@@ -388,7 +445,7 @@
   }
   function closeView(){
     view.classList.remove('open');
-    vimg.src = '';
+    stage.innerHTML = '';
     // collapse the tags/notes panel and the chord overlay: both start hidden and should
     // not stay open (and eat the sheet space) the next time a song is opened
     var nb = document.getElementById('notebar');
@@ -626,6 +683,8 @@
     document.getElementById('vchords').title = t('chordsBtn');
     // if the chord overlay is open, redraw it in the new language
     if(!document.getElementById('chordpop').hidden) showChords();
+    // ...and the sheet itself (page range in the bar + the continuation seam labels)
+    if(view.classList.contains('open') && songs[idx]) renderSheet(songs[idx]);
     document.getElementById('notein').placeholder = t('notePh');
     document.getElementById('expbtn').textContent = t('exportAll');
     document.getElementById('impbtn').textContent = t('importBtn');
