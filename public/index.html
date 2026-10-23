@@ -148,12 +148,79 @@
     font-size:14px;font-weight:800;color:var(--ink2);margin:6px 0 0;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
   }
+  /* --- who is this (no login, just a name) --- */
+  #userbtn{display:inline-flex;align-items:center;gap:8px;max-width:200px}
+  #userbtn .un{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .dot{width:12px;height:12px;border-radius:50%;flex:0 0 auto;background:var(--uc,var(--accent))}
+  .modal{position:fixed;inset:0;z-index:90;background:rgba(24,23,20,.74);
+         display:flex;align-items:flex-end;justify-content:center}
+  .modal[hidden]{display:none}
+  .sheet{
+    background:var(--card);width:100%;max-width:540px;border-radius:26px 26px 0 0;
+    padding:24px 20px calc(22px + env(safe-area-inset-bottom));
+    max-height:92vh;overflow:auto;-webkit-overflow-scrolling:touch;
+  }
+  .sheet h2{font-size:26px;margin:0 0 6px;font-weight:900;letter-spacing:-.3px}
+  .sheet .sub2{font-size:16px;color:var(--ink2);margin:0 0 18px;line-height:1.4}
+  .ulist{display:flex;flex-direction:column;gap:10px;margin:0 0 16px}
+  .ubtn{
+    display:flex;align-items:center;gap:12px;font:inherit;font-size:18px;font-weight:800;
+    background:var(--chip);border:2px solid var(--line);border-radius:18px;padding:15px 16px;
+    cursor:pointer;text-align:left;color:var(--ink);width:100%;
+  }
+  .ubtn:active{transform:scale(.99)}
+  .ubtn .dot{width:16px;height:16px}
+  .ubtn .tagme{font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;
+               color:#fff;background:var(--uc,var(--accent));border-radius:999px;padding:3px 9px;margin-left:auto}
+  .newuser{display:flex;gap:10px}
+  .newuser input{
+    flex:1;min-width:0;font:inherit;font-size:18px;padding:14px 16px;border-radius:18px;
+    border:2px solid var(--line);outline:none;background:var(--chip);color:var(--ink);
+  }
+  .newuser input:focus{border-color:var(--accent)}
+  .uerr{font-size:15px;font-weight:800;color:#B03060;margin:10px 0 0}
+  /* --- a tune's marks: one coloured block per person --- */
+  .marks{display:flex;flex-direction:column;gap:9px;margin-top:10px}
+  .mrow{border-left:4px solid var(--uc,var(--accent));padding:2px 0 2px 11px}
+  .mhead{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+  .mname{font-size:13px;font-weight:900;letter-spacing:.03em;color:var(--uc,var(--accent));
+         text-transform:uppercase}
+  .mtag{
+    font-size:13px;font-weight:800;color:#fff;background:var(--uc,var(--accent));
+    border-radius:999px;padding:3px 10px;
+  }
+  .mnote{font-size:15px;color:var(--ink2);margin:5px 0 0;white-space:pre-wrap}
+  /* --- others' marks inside the dark note panel --- */
+  .others{border-top:1px solid #3A3428;padding-top:10px;display:flex;flex-direction:column;gap:9px}
+  .others[hidden]{display:none}
+  .olbl{font-size:12px;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#8E8778;margin:0}
+  .onight{border-left:4px solid var(--uc);padding:2px 0 2px 10px}
+  .onight .mhead{gap:7px}
+  .onight .mname{color:#F4EFE5;font-size:13px}
+  .onight .mtag{font-size:13px}
+  .onight .mnote{color:#C9C2B4;font-size:15px}
+  /* --- offline / queue pill + toast --- */
+  #netpill{
+    display:none;font-size:13px;font-weight:900;border-radius:999px;padding:5px 11px;
+    background:#F3E7D2;color:#8A4A22;
+  }
+  #netpill.show{display:inline-block}
+  #toast{
+    position:fixed;left:50%;transform:translateX(-50%);bottom:calc(22px + env(safe-area-inset-bottom));
+    z-index:120;background:#232019;color:#F4EFE5;font-size:15px;font-weight:800;
+    padding:13px 18px;border-radius:16px;max-width:88vw;line-height:1.35;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  #toast[hidden]{display:none}
+
 </style>
 </head>
 <body>
 <div class="wrap">
   <div class="hdrow">
     <h1>🎷 Real Book</h1>
+    <span id="netpill"></span>
+    <button class="chip" id="userbtn" title="Account"><span class="dot"></span><span class="un">…</span></button>
     <button class="chip" id="langbtn">中文</button>
   </div>
   <p class="sub" id="sub">Loading…</p>
@@ -204,7 +271,36 @@
       <button class="btn sm" id="impbtn">⤒ Import</button>
       <input id="impfile" type="file" accept="application/json,.json" hidden>
     </div>
+    <div class="others" id="others" hidden></div>
   </div>
+
+  <div class="modal" id="umodal" hidden>
+    <div class="sheet">
+      <h2 id="uh">Sign in</h2>
+      <p class="sub2" id="up">Sign in with your Google account so your tags and notes are yours alone — and show up for everyone else in your own colour.</p>
+      <button class="btn go gsign" id="gsign">
+        <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true" style="flex:0 0 auto">
+          <path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9 3.6l6.7-6.7C35.6 2.5 30.2 0 24 0 14.6 0 6.4 5.4 2.5 13.2l7.8 6.1C12.2 13.6 17.6 9.5 24 9.5z"/>
+          <path fill="#4285F4" d="M46.1 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.4c-.5 2.9-2.1 5.3-4.5 6.9l7.1 5.5c4.2-3.9 6.6-9.6 6.6-16.4z"/>
+          <path fill="#FBBC05" d="M10.3 28.7c-.5-1.4-.7-2.9-.7-4.7s.3-3.3.7-4.7l-7.8-6.1C.9 16.3 0 20 0 24s.9 7.7 2.5 10.8l7.8-6.1z"/>
+          <path fill="#34A853" d="M24 48c6.2 0 11.5-2 15.3-5.6l-7.1-5.5c-2 1.4-4.6 2.2-8.2 2.2-6.4 0-11.8-4.1-13.7-9.8l-7.8 6.1C6.4 42.6 14.6 48 24 48z"/>
+        </svg>
+        <span id="gsigntxt">Sign in with Google</span>
+      </button>
+      <p class="uerr" id="signinerr" hidden></p>
+      <p class="sub2" id="upnote" style="margin-top:14px">No password to remember — Google vouches for who you are. You can change the name shown next to your notes afterwards.</p>
+      <div class="ulist" id="ulist"></div>
+      <div class="newuser" id="namerow" hidden>
+        <input id="uinput" type="text" placeholder="Your display name…" maxlength="24" autocapitalize="words" autocorrect="off" spellcheck="false">
+        <button class="btn go" id="uadd">Save</button>
+      </div>
+      <button class="btn sm" id="signout" hidden style="align-self:flex-start;margin-top:6px">Sign out</button>
+      <button class="btn sm" id="uclose" style="align-self:flex-start;margin-top:6px">Browse without signing in</button>
+      <p class="uerr" id="uerr" hidden></p>
+    </div>
+  </div>
+
+  <div id="toast" hidden></div>
 
   <div class="chordpop" id="chordpop" hidden>
     <p class="cpophead" id="cpoph"></p>
@@ -227,16 +323,215 @@
      terms in the search index.
      --------------------------------------------------------------------------- */
   var SHOW_CHORDS = false;
-  var TAGS = JSON.parse(localStorage.getItem('rbk.tags') || '{}');
-  var NOTES = JSON.parse(localStorage.getItem('rbk.notes') || '{}');
+
+  /* ---------------------------------------------------------------------------
+     TAGS AND NOTES LIVE IN THE SHARED STORE, NOT IN THIS BROWSER.
+
+     A mark belongs to a NAME, and the server hands that name a colour the first
+     time it is seen — so the band's tags and notes on a tune are readable at a
+     glance and nobody can overwrite anybody else. There is no login: you pick a
+     name once and this browser remembers which one it was.
+
+     Where each thing lives:
+       localStorage 'rbk.user'     which name this browser is  (identity, not data)
+       localStorage 'rbk.pending'  writes the server has not acknowledged yet
+       localStorage 'rbk.lang'     English / 中文
+       D1, via /api/rbk/*          every tag and every note — authoritative
+
+     Anything an older build left in 'rbk.tags' / 'rbk.notes' is imported once,
+     VERIFIED against the server, and only then deleted from the browser.
+     --------------------------------------------------------------------------- */
+  /* Where the shared store lives. On realbook.fuyanou.com the Worker answers on
+     /api/rbk on this same origin, so the page never talks cross-origin. Anywhere
+     else — 127.0.0.1:8123 during development, the Mac's LAN address on an iPad —
+     there is no API on the origin being served, so point at the live store. The
+     Worker allows CORS from any origin, and window.RBK_API_BASE is the test seam
+     the local mock sets so nothing on disk has to change to exercise it. */
+  var API = window.RBK_API_BASE ||
+    (/(^|\.)fuyanou\.com$/.test(location.hostname)
+      ? '/api/rbk'
+      : 'https://realbook.fuyanou.com/api/rbk');
+  var SYNC_KEY = 'daabfe2cbf27b4895144dc46b947f087';  // ships in the page: obfuscation, not auth
+  var POLL_MS = 20000;
+
+  var ME = null;            // {key, name, color, email}
+  var TOKEN = null;         // opaque session token issued by the Worker
+  var USERS = {};           // key -> {key, name, color}
+  var SHARED = {};          // songId -> { userKey: {note:'', tags:[]} }
+  var TAGS = {}, NOTES = {};// mine, mirrored out of SHARED for the existing code paths
+  var PENDING = [];         // ops queued but not yet acknowledged
+  var syncing = false;
   var noteOnly = false;
   var q = document.getElementById('q'), list = document.getElementById('list'), none = document.getElementById('none');
 
-  function saveTags(){ localStorage.setItem('rbk.tags', JSON.stringify(TAGS)); }
   function tagsOf(s){ return TAGS[s.id] || []; }
-  function saveNotes(){ localStorage.setItem('rbk.notes', JSON.stringify(NOTES)); }
   function noteOf(s){ return (NOTES[s.id] || '').toString(); }
-  function hasMarks(s){ return !!(noteOf(s).trim() || tagsOf(s).length); }
+  function box(song){ return SHARED[song] || (SHARED[song] = {}); }
+  function mineIn(song){ var b = box(song); return b[ME.key] || (b[ME.key] = {note:'', tags:[]}); }
+
+  /* Everybody's marks on one tune, mine first. */
+  function marksOf(s){
+    var out = [];
+    if(ME && (tagsOf(s).length || noteOf(s).trim())){
+      out.push({key:ME.key, name:ME.name, color:ME.color, tags:tagsOf(s), note:noteOf(s), me:true});
+    }
+    var b = SHARED[s.id] || {};
+    Object.keys(b).forEach(function(k){
+      if(ME && k === ME.key) return;
+      var m = b[k], tags = (m.tags || []).slice(), note = (m.note || '').toString();
+      if(!tags.length && !note.trim()) return;
+      var u = USERS[k] || {name:k, color:'#6B6558'};
+      out.push({key:k, name:u.name, color:u.color, tags:tags, note:note});
+    });
+    return out;
+  }
+  function hasMarks(s){ return marksOf(s).length > 0; }
+
+  /* ---------- talking to the shared store ---------- */
+  function apiFetch(path, opts){
+    opts = opts || {};
+    var init = {
+      method: opts.method || 'GET',
+      cache: 'no-store',
+      headers: {'x-sync-key': SYNC_KEY, 'content-type': 'application/json'}
+    };
+    if(opts.body !== undefined) init.body = JSON.stringify(opts.body);
+    if(TOKEN) init.headers['authorization'] = 'Bearer ' + TOKEN;
+    return fetch(API + path, init).then(function(r){
+      return r.json().catch(function(){ return {ok:false, error:'bad response'}; })
+        .then(function(j){
+          // A session that expired or was revoked on another device must not
+          // leave the app looking signed in while every write silently fails.
+          if(r.status === 401 && TOKEN){
+            TOKEN = null;
+            try{ localStorage.removeItem('rbk.token'); }catch(e){}
+            ME = null; paintUser(); showSignIn('');
+          }
+          if(!r.ok || j.ok === false) throw new Error(j.error || ('HTTP ' + r.status));
+          return j;
+        });
+    });
+  }
+
+  function setNet(ok){
+    var p = document.getElementById('netpill');
+    var n = PENDING.length;
+    if(ok && !n){ p.className = ''; p.textContent = ''; return; }
+    p.className = 'show';
+    p.textContent = ok ? ('⏳ ' + n) : t('off');
+  }
+  function savePending(){
+    try{
+      if(PENDING.length) localStorage.setItem('rbk.pending', JSON.stringify(PENDING));
+      else localStorage.removeItem('rbk.pending');
+    }catch(e){}
+  }
+  /* One queued op per tune+field: typing again replaces the queued note instead
+     of stacking a hundred of them behind a slow connection. */
+  function queue(op){
+    for(var i = PENDING.length - 1; i >= 0; i--){
+      var p = PENDING[i];
+      if(p.path !== op.path || p.body.song !== op.body.song) continue;
+      if(op.path === '/note' || (op.path === '/tag' && p.body.tag === op.body.tag)) PENDING.splice(i, 1);
+    }
+    PENDING.push(op);
+    savePending();
+    setNet(true);
+    flush();
+  }
+  function flush(){
+    if(!ME || syncing || !PENDING.length) return;
+    if(navigator.onLine === false){ setNet(false); return; }
+    syncing = true;
+    var op = PENDING[0];
+    apiFetch(op.path, {method:'POST', body:op.body}).then(function(){
+      var i = PENDING.indexOf(op);
+      if(i >= 0) PENDING.splice(i, 1);
+      savePending();
+      syncing = false;
+      setNet(true);
+      flush();
+    }).catch(function(){
+      syncing = false;
+      setNet(false);
+    });
+  }
+  /* What is queued is newer than what the server returned, so replay it over
+     the fresh state — otherwise a poll landing mid-typing would blink the note
+     you are writing back to its last saved value. */
+  function applyPending(mirror){
+    PENDING.forEach(function(op){
+      if(!op.body.song || !op.body.user) return;
+      var k = String(op.body.user).toLowerCase();
+      var b = mirror[op.body.song] || (mirror[op.body.song] = {});
+      var m = b[k] || (b[k] = {note:'', tags:[]});
+      if(op.path === '/note') m.note = op.body.note || '';
+      if(op.path === '/tag'){
+        var tag = String(op.body.tag || '').toLowerCase();
+        var at = m.tags.indexOf(tag);
+        if(op.body.op === 'del'){ if(at >= 0) m.tags.splice(at, 1); }
+        else if(at < 0) m.tags.push(tag);
+      }
+    });
+  }
+  function pull(){
+    return apiFetch('/state').then(function(st){
+      var next = {};
+      USERS = {};
+      (st.users || []).forEach(function(u){ USERS[u.key] = u; });
+      (st.notes || []).forEach(function(r){
+        var b = next[r.song] || (next[r.song] = {});
+        var m = b[r.user] || (b[r.user] = {note:'', tags:[]});
+        m.note = r.note;
+      });
+      (st.tags || []).forEach(function(r){
+        var b = next[r.song] || (next[r.song] = {});
+        var m = b[r.user] || (b[r.user] = {note:'', tags:[]});
+        m.tags.push(r.tag);
+      });
+      applyPending(next);
+      SHARED = next;
+      if(ME && USERS[ME.key]) ME = USERS[ME.key];
+      rebuildMine();
+      setNet(true);
+      paintUser();
+      if(ALL.length){ render(); buildTagFilters(); }
+      if(view && view.classList.contains('open')){
+        renderOthers();
+        if(!document.getElementById('notebar').hidden) renderNote();
+      }
+      return st;
+    }).catch(function(e){ setNet(false); throw e; });
+  }
+  function rebuildMine(){
+    TAGS = {}; NOTES = {};
+    if(!ME) return;
+    Object.keys(SHARED).forEach(function(song){
+      var m = SHARED[song][ME.key];
+      if(!m) return;
+      if(m.tags && m.tags.length) TAGS[song] = m.tags.slice();
+      if(m.note && m.note.trim()) NOTES[song] = m.note;
+    });
+  }
+
+  /* ---------- writing ---------- */
+  function putNote(song, text){
+    if(!ME){ showSignIn(t('signInToWrite')); return; }
+    text = (text || '').replace(/\r\n/g, '\n').replace(/[ \t]+$/gm, '').replace(/\s+$/, '');
+    mineIn(song).note = text;
+    rebuildMine();
+    queue({path:'/note', body:{user:ME.name, song:song, note:text, ts:Date.now()}});
+    render(); buildTagFilters(); updateNoteBtn(); renderOthers();
+  }
+  function putTag(song, tag, op){
+    if(!ME){ showSignIn(t('signInToWrite')); return; }
+    var m = mineIn(song), at = m.tags.indexOf(tag);
+    if(op === 'add' && at < 0) m.tags.push(tag);
+    if(op === 'del' && at >= 0) m.tags.splice(at, 1);
+    rebuildMine();
+    queue({path:'/tag', body:{user:ME.name, song:song, tag:tag, op:op}});
+    render(); buildTagFilters(); updateNoteBtn(); renderOthers();
+  }
 
   /* ---------- i18n: English / 中文 ----------
      Only the app's own chrome is translated. Song titles, composer names and the
@@ -245,9 +540,9 @@
   var LANG = localStorage.getItem('rbk.lang') || 'en';
   var S = {
     en: {
-      search: 'Search title, composer, key, #tag or your note…',
-      sortBy: 'Sort by', bookLbl: 'Real book', marksLbl: 'Your tags & notes',
-      allBooks: 'All books', mine: '✎ mine',
+      search: 'Search title, composer, key, #tag or a note…',
+      sortBy: 'Sort by', bookLbl: 'Real book', marksLbl: 'Tags & notes',
+      allBooks: 'All books', mine: '✎ marked',
       sTitle: '🔤 Title', sComposer: '✍️ Composer', sKey: '🎼 Key',
       sBook: '📚 Book', sPage: '📄 Page #',
       none: 'No song matches that.',
@@ -269,16 +564,37 @@
       appPageLongRangeFmt: function(a, b){ return 'app. pages ' + a + '–' + b; },
       contFmt: function(n){ return 'continued ▸ ' + n; },
       subFmt: function(a, b){ return a + ' tunes · ' + b + ' books · tap a song to open its page'; },
-      expDone: function(n, t2){ return 'exported ' + n + ' notes, ' + t2 + ' tagged tunes'; },
+      expDone: function(n, g){ return 'exported ' + n + ' note(s), ' + g + ' tag(s)'; },
       impDone: function(n, t2){ return 'imported ' + n + ' notes, ' + t2 + ' tags'; },
       impFail: function(m){ return 'import failed — ' + m; },
       loading: 'Loading…',
-      loadFail: function(e){ return 'Could not load realbook.json — ' + e; }
+      loadFail: function(e){ return 'Could not load realbook.json — ' + e; },
+      off: '⚠ offline',
+      pickName: "Who's playing?",
+      pickSub: 'Pick your name — tags and notes are kept per person, so everyone sees who wrote what. No password, and you can change it any time.',
+      newName: 'New name…', start: 'Start', thatMe: 'this is me',
+      switchUser: 'Switch name',
+      nameBad: 'Use at least 2 letters or numbers, no symbols.',
+      othersHead: 'Who else marked this tune',
+      account: 'Your account',
+      signIn: 'Sign in',
+      signInSub: 'Sign in with your Google account so your tags and notes are yours alone — and show up for everyone else in your own colour.',
+      signInGoogle: 'Sign in with Google',
+      redirecting: 'Taking you to Google…',
+      notConfigured: 'Sign-in is not switched on yet — the site owner still has to add the Google credentials.',
+      displayName: 'Your display name…',
+      saveName: 'Save name',
+      signedInAs: function(e){ return 'Signed in as ' + e; },
+      signInToWrite: 'Sign in to save notes and tags.',
+      importing: 'Moving your notes to the shared store…',
+      migDone: function(n, g){ return 'Imported ' + n + ' note(s) and ' + g + ' tag(s) into the shared store — the local copy in this browser was cleared.'; },
+      migFail: function(n){ return n + ' item(s) could not be verified on the server — your local copy was KEPT and will retry next time.'; },
+      migNet: function(m){ return 'Could not reach the shared store (' + m + ') — local notes kept, will retry next load.'; }
     },
     zh: {
       search: '搜尋曲名、作曲、調性、#標籤或筆記…',
-      sortBy: '排序', bookLbl: '樂譜集', marksLbl: '我的標籤與筆記',
-      allBooks: '全部樂譜集', mine: '✎ 我的',
+      sortBy: '排序', bookLbl: '樂譜集', marksLbl: '標籤與筆記',
+      allBooks: '全部樂譜集', mine: '✎ 已標記',
       sTitle: '🔤 曲名', sComposer: '✍️ 作曲', sKey: '🎼 調性',
       sBook: '📚 樂譜集', sPage: '📄 頁碼',
       none: '沒有符合的曲目。',
@@ -300,11 +616,32 @@
       appPageLongRangeFmt: function(a, b){ return '附錄 第' + a + '–' + b + '頁'; },
       contFmt: function(n){ return '續 ▸ ' + n; },
       subFmt: function(a, b){ return a + ' 首 · ' + b + ' 本樂譜集 · 點擊曲目開啟樂譜頁'; },
-      expDone: function(n, t2){ return '已匯出 ' + n + ' 則筆記、' + t2 + ' 首有標籤'; },
+      expDone: function(n, g){ return '已匯出 ' + n + ' 則筆記、' + g + ' 個標籤'; },
       impDone: function(n, t2){ return '已匯入 ' + n + ' 則筆記、' + t2 + ' 個標籤'; },
       impFail: function(m){ return '匯入失敗 — ' + m; },
       loading: '載入中…',
-      loadFail: function(e){ return '無法載入 realbook.json — ' + e; }
+      loadFail: function(e){ return '無法載入 realbook.json — ' + e; },
+      off: '⚠ 離線',
+      pickName: '你是誰？',
+      pickSub: '選一個名字——標籤與筆記會依人分開儲存，大家看得到是誰寫的。不需要密碼，之後也可以改。',
+      newName: '新名字…', start: '開始', thatMe: '這是我',
+      switchUser: '切換名字',
+      nameBad: '請至少輸入 2 個字或數字，不要使用符號。',
+      othersHead: '還有誰標記了這首',
+      account: '你的帳號',
+      signIn: '登入',
+      signInSub: '用你的 Google 帳號登入，標籤與筆記就只屬於你，別人也會看到你專屬的顏色。',
+      signInGoogle: '用 Google 登入',
+      redirecting: '正在前往 Google…',
+      notConfigured: '尚未開啟登入功能——站長還需要填入 Google 憑證。',
+      displayName: '你的顯示名稱…',
+      saveName: '儲存名稱',
+      signedInAs: function(e){ return '已登入：' + e; },
+      signInToWrite: '登入後才能儲存筆記與標籤。',
+      importing: '正在把本機筆記搬到共用資料庫…',
+      migDone: function(n, g){ return '已將 ' + n + ' 則筆記、' + g + ' 個標籤匯入共用資料庫——此瀏覽器中的本機副本已清除。'; },
+      migFail: function(n){ return '有 ' + n + ' 項目未能在伺服器上驗證——本機副本已保留，下次會再試。'; },
+      migNet: function(m){ return '無法連上共用資料庫（' + m + '）——本機筆記已保留，下次載入時再試。'; }
     }
   };
   function t(k){ return S[LANG][k]; }
@@ -321,9 +658,16 @@
 
   function norm(x){ return (x||'').toString().toLowerCase(); }
 
+  /* The index covers EVERYONE's marks, so a search or a #tag finds the tune even
+     if it was somebody else who filed it that way. */
   function haystack(s){
+    var tags = [], notes = [];
+    marksOf(s).forEach(function(m){
+      tags = tags.concat(m.tags);
+      notes.push(m.note || '', m.name || '');
+    });
     return [s.title, s.composer, s.key, s.style, s.keySig, s.bookLabel, s.book,
-            tagsOf(s).join(' '), noteOf(s),
+            tags.join(' '), notes.join(' '),
             (SHOW_CHORDS ? (s.chords || []).join(' ') : '')].map(norm).join(' | ');
   }
 
@@ -332,11 +676,14 @@
     var f = term.replace(/^#/, '');
     var hashtag = term.charAt(0) === '#';
     var out = ALL.filter(function(s){
-      if(tagFilter && tagsOf(s).indexOf(tagFilter) < 0) return false;
+      var mk = marksOf(s);
+      if(tagFilter && !mk.some(function(m){ return m.tags.indexOf(tagFilter) >= 0; })) return false;
       if(bookFilter && s.book !== bookFilter) return false;
-      if(noteOnly && !hasMarks(s)) return false;
+      if(noteOnly && !mk.length) return false;
       if(!f) return true;
-      if(hashtag) return tagsOf(s).some(function(t){ return norm(t).indexOf(f) >= 0; });
+      if(hashtag) return mk.some(function(m){
+        return m.tags.some(function(tg){ return norm(tg).indexOf(f) >= 0; });
+      });
       return haystack(s).indexOf(f) >= 0;
     });
     out.sort(function(a,b){
@@ -372,18 +719,33 @@
     return s.appendix ? t('appPageFmt')(a) : t('pageFmt')(a);
   }
 
+  function clip(txt, n){
+    txt = (txt || '').toString();
+    return txt.length > n ? txt.slice(0, n).replace(/\s+$/, '') + '…' : txt;
+  }
+  /* One person's marks, in their colour. `night` is the dark note panel. */
+  function markBlock(m, night){
+    return '<div class="'+(night ? 'onight' : 'mrow')+'" style="--uc:'+esc(m.color)+'">'+
+      '<div class="mhead">'+
+        '<span class="mname">'+esc(m.name)+'</span>'+
+        m.tags.map(function(x){ return '<span class="mtag">#'+esc(x)+'</span>'; }).join('')+
+      '</div>'+
+      (m.note.trim() ? '<p class="mnote">'+esc(clip(m.note, night ? 500 : 200))+'</p>' : '')+
+    '</div>';
+  }
+
   function render(){
     var html = songs.map(function(s, i){
-      var tagHtml = tagsOf(s).map(function(x){ return '<span class="tag">#'+esc(x)+'</span>'; }).join('');
-      var nt = noteOf(s).trim();
+      var mk = marksOf(s);
+      var shown = mk.slice(0, 3), extra = mk.length - shown.length;
       return '<div class="card" data-i="'+i+'">'+
         '<div style="flex:1;min-width:0">'+
-          '<div class="nm">'+esc(s.title)+(nt ? '<span class="notemark">✎</span>' : '')+'</div>'+
+          '<div class="nm">'+esc(s.title)+(mk.length ? '<span class="notemark">✎</span>' : '')+'</div>'+
           '<p class="meta">'+[esc(s.composer||t('composerUnknown')), esc(s.key||t('keyUnknown'))].join(' · ')+'</p>'+
           '<div class="bk">'+esc(s.bookLabel||'')+'</div>'+
           (SHOW_CHORDS && s.chords && s.chords.length ? '<div class="chords">'+esc((s.chordsApprox ? '≈ ' : '') + s.chords.slice(0,14).join(' '))+'</div>' : '')+
-          (nt ? '<p class="noteprev">'+esc(nt.length > 220 ? nt.slice(0, 220) + '…' : nt)+'</p>' : '')+
-          '<div class="tags">'+tagHtml+'</div>'+
+          (mk.length ? '<div class="marks">'+shown.map(function(m){ return markBlock(m, false); }).join('')+
+             (extra > 0 ? '<p class="mnote" style="opacity:.65">+' + extra + '</p>' : '')+'</div>' : '')+
         '</div>'+
         '<div class="pg">'+ (s.page!=null ? pageLabel(s, false) : '—') +'</div>'+
       '</div>';
@@ -434,6 +796,7 @@
     view.classList.add('open');
     renderTagbar();
     renderNote();
+    renderOthers();
     document.getElementById('stage').scrollTop = 0;
     var vc = document.getElementById('vchords');
     // only offer it when chords are enabled AND this song has some
@@ -474,50 +837,59 @@
   }
   function renderTagbar(){
     var s = songs[idx]; if(!s) return;
-    var box = document.querySelector('.tagbar');
-    box.querySelectorAll('.tag').forEach(function(n){ n.remove(); });
-    tagsOf(s).forEach(function(t){
+    var bar = document.querySelector('.tagbar');
+    bar.querySelectorAll('.tag').forEach(function(n){ n.remove(); });
+    tagsOf(s).forEach(function(tag){
       var b = document.createElement('button');
       b.className = 'tag';
-      b.innerHTML = '#' + esc(t) + ' <b>×</b>';
+      if(ME){ b.style.background = ME.color; b.style.color = '#fff'; }
+      b.innerHTML = '#' + esc(tag) + ' <b>×</b>';
       b.onclick = function(){
-        TAGS[s.id] = tagsOf(s).filter(function(x){ return x !== t; });
-        if(!TAGS[s.id].length) delete TAGS[s.id];
-        saveTags(); renderTagbar(); buildTagFilters(); apply();
+        putTag(s.id, tag, 'del');
+        renderTagbar(); renderOthers(); apply();
       };
-      box.insertBefore(b, tagin);
+      bar.insertBefore(b, tagin);
     });
     updateNoteBtn();
   }
+  /* Other people's tags and notes on the open tune, each in their own colour. */
+  function renderOthers(){
+    var el = document.getElementById('others');
+    var s = songs[idx];
+    if(!el) return;
+    if(!s){ el.hidden = true; return; }
+    var ppl = marksOf(s).filter(function(m){ return !m.me; });
+    if(!ppl.length){ el.hidden = true; el.innerHTML = ''; return; }
+    el.innerHTML = '<p class="olbl">'+esc(t('othersHead'))+'</p>' +
+                   ppl.map(function(m){ return markBlock(m, true); }).join('');
+    el.hidden = false;
+  }
   function addTag(){
     var s = songs[idx]; if(!s) return;
-    var t = norm(tagin.value.trim()).replace(/^#/, '').replace(/[^a-z0-9\-_ ]/g, '').trim();
-    if(!t) return;
-    if(tagsOf(s).indexOf(t) < 0) TAGS[s.id] = tagsOf(s).concat([t]);
-    saveTags(); tagin.value = ''; renderTagbar(); buildTagFilters(); apply();
+    var tag = norm(tagin.value.trim()).replace(/^#/, '').replace(/[^a-z0-9\-_ ]/g, '').trim();
+    if(!tag) return;
+    putTag(s.id, tag, 'add');
+    tagin.value = ''; renderTagbar(); renderOthers(); apply();
   }
   document.getElementById('tagadd').onclick = addTag;
   tagin.addEventListener('keydown', function(e){ if(e.key === 'Enter') addTag(); });
 
-  /* ---------- notes (yours, stored locally) ---------- */
+  /* ---------- notes (mine, saved to the shared store) ---------- */
   var notebar = document.getElementById('notebar'), notein = document.getElementById('notein');
   var nstat = document.getElementById('nstat'), noteTimer = null;
 
   function renderNote(){
     var s = songs[idx]; if(!s) return;
     var v = noteOf(s);
-    notein.value = v;
+    if(document.activeElement !== notein) notein.value = v;
     nstat.textContent = v.trim() ? t('saved') : '';
     nstat.className = 'nhint' + (v.trim() ? ' ok' : '');
     updateNoteBtn();
   }
   function flushNote(){
     var s = songs[idx]; if(!s) return;
-    var v = notein.value.replace(/\s+$/, '');
-    if(v.trim()) NOTES[s.id] = v; else delete NOTES[s.id];
-    saveNotes();
+    putNote(s.id, notein.value);
     nstat.textContent = t('savedOk'); nstat.className = 'nhint ok';
-    render(); buildTagFilters(); updateNoteBtn();
   }
   notein.addEventListener('input', function(){
     nstat.textContent = t('editing'); nstat.className = 'nhint';
@@ -556,41 +928,74 @@
     if(document.getElementById('chordpop').hidden) showChords(); else hideChords();
   };
 
+  /* ---------- backup / restore ----------
+     Export writes the WHOLE shared store, every person included, so it doubles as
+     a real backup. Import accepts that format and the old browser-only one
+     ({notes:{song:text}, tags:{song:[tag]}}), and merges through the API — it
+     never overwrites a note that is already there. */
   function exportAll(){
-    var data = {app:'realbook', version:1, exported:new Date().toISOString(),
-                tags:TAGS, notes:NOTES};
+    var data = {app:'realbook', version:2, exported:new Date().toISOString(),
+                users:Object.keys(USERS).map(function(k){ return USERS[k]; }),
+                notes:[], tags:[]};
+    Object.keys(SHARED).forEach(function(song){
+      var b = SHARED[song] || {};
+      Object.keys(b).forEach(function(u){
+        var m = b[u] || {};
+        if((m.note||'').trim()) data.notes.push({user:u, song:song, note:m.note});
+        (m.tags||[]).forEach(function(tg){ data.tags.push({user:u, song:song, tag:tg}); });
+      });
+    });
     var blob = new Blob([JSON.stringify(data, null, 1)], {type:'application/json'});
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'realbook-notes.json';
     document.body.appendChild(a); a.click(); a.remove();
     setTimeout(function(){ URL.revokeObjectURL(a.href); }, 3000);
-    nstat.textContent = t('expDone')(Object.keys(NOTES).length, Object.keys(TAGS).length);
+    nstat.textContent = t('expDone')(data.notes.length, data.tags.length);
     nstat.className = 'nhint ok';
   }
   function importAll(file){
     var rd = new FileReader();
     rd.onload = function(){
-      try{
-        var d = JSON.parse(rd.result);
-        var nt = d.notes || {}, tg = d.tags || {};
-        var nA = 0, tA = 0;
-        Object.keys(nt).forEach(function(k){
-          if(!noteOf({id:k}).trim() && String(nt[k]).trim()){ NOTES[k] = nt[k]; nA++; }
+      var d;
+      try{ d = JSON.parse(rd.result); }
+      catch(err){ nstat.textContent = t('impFail')(err.message); nstat.className = 'nhint'; return; }
+
+      var byUser = {};
+      function bucket(u){ u = String(u || (ME && ME.name) || '').toLowerCase();
+                          return byUser[u] || (byUser[u] = {notes:{}, tags:{}}); }
+
+      if(d && Array.isArray(d.notes) && Array.isArray(d.tags)){
+        d.notes.forEach(function(r){ if(r && r.song) bucket(r.user).notes[r.song] = r.note || ''; });
+        d.tags.forEach(function(r){
+          if(!r || !r.song || !r.tag) return;
+          var b = bucket(r.user).tags;
+          (b[r.song] = b[r.song] || []).push(r.tag);
         });
-        Object.keys(tg).forEach(function(k){
-          var cur = TAGS[k] || [];
-          (tg[k] || []).forEach(function(t){ if(cur.indexOf(t) < 0){ cur.push(t); tA++; } });
-          if(cur.length) TAGS[k] = cur;
-        });
-        saveNotes(); saveTags();
-        renderNote(); renderTagbar(); buildTagFilters(); render();
-        nstat.textContent = t('impDone')(nA, tA);
-        nstat.className = 'nhint ok';
-      }catch(err){
-        nstat.textContent = t('impFail')(err.message);
-        nstat.className = 'nhint';
+      }else if(d){
+        var mine = bucket(ME && ME.name), nt = d.notes || {}, tg = d.tags || {};
+        Object.keys(nt).forEach(function(k){ mine.notes[k] = nt[k]; });
+        Object.keys(tg).forEach(function(k){ mine.tags[k] = tg[k]; });
       }
+
+      var names = Object.keys(byUser).filter(function(u){ return u; });
+      if(!names.length){ nstat.textContent = t('impDone')(0, 0); return; }
+      nstat.textContent = t('importing'); nstat.className = 'nhint';
+
+      Promise.all(names.map(function(u){
+        var b = byUser[u];
+        return apiFetch('/import', {method:'POST',
+                                    body:{user:u, notes:b.notes, tags:b.tags}});
+      })).then(function(res){
+        var n = 0, g = 0;
+        (res || []).forEach(function(r){ n += r.notes.inserted; g += r.tags.inserted; });
+        return pull().then(function(){
+          renderNote(); renderTagbar(); renderOthers();
+          nstat.textContent = t('impDone')(n, g); nstat.className = 'nhint ok';
+        });
+      }).catch(function(err){
+        nstat.textContent = t('impFail')(err.message); nstat.className = 'nhint';
+      });
     };
     rd.readAsText(file);
   }
@@ -639,8 +1044,18 @@
   });
 
   function buildTagFilters(){
+    // counts are per TUNE, from everybody's tags — a chip means "tunes anyone filed this way"
     var all = {};
-    Object.keys(TAGS).forEach(function(k){ (TAGS[k]||[]).forEach(function(t){ all[t] = (all[t]||0)+1; }); });
+    Object.keys(SHARED).forEach(function(song){
+      var b = SHARED[song] || {}, seen = {};
+      Object.keys(b).forEach(function(u){
+        (b[u].tags || []).forEach(function(tg){
+          if(seen[tg]) return;
+          seen[tg] = 1;
+          all[tg] = (all[tg] || 0) + 1;
+        });
+      });
+    });
     var names = Object.keys(all).sort();
     var nMarked = ALL.filter(hasMarks).length;
     var row = document.getElementById('tagfilterrow');
@@ -689,6 +1104,8 @@
     document.getElementById('expbtn').textContent = t('exportAll');
     document.getElementById('impbtn').textContent = t('importBtn');
     buildSorts();
+    paintUser();
+    if(umodal && !umodal.hidden) showUserModal(uerr.textContent || '');
     if(ALL.length){
       buildBookFilters(); buildTagFilters(); setSub(); render();
     } else {
@@ -701,6 +1118,169 @@
     applyLang();
   };
   applyLang();
+
+  /* ---------- who is this, and moving old local notes into the store ---------- */
+  var umodal = document.getElementById('umodal'), ulist = document.getElementById('ulist');
+  var uinput = document.getElementById('uinput'), uerr = document.getElementById('uerr');
+
+  function toast(msg, ms){
+    var el = document.getElementById('toast');
+    el.textContent = msg;
+    el.hidden = false;
+    clearTimeout(toast._t);
+    toast._t = setTimeout(function(){ el.hidden = true; }, ms || 6000);
+  }
+  function paintUser(){
+    var b = document.getElementById('userbtn');
+    if(!b) return;
+    if(!ME){ b.style.setProperty('--uc', 'var(--accent)'); b.querySelector('.un').textContent = '…'; return; }
+    b.style.setProperty('--uc', ME.color || 'var(--accent)');
+    b.querySelector('.un').textContent = ME.name;
+    b.title = ME.email || ME.name;
+  }
+  /* The account sheet. Signed out it is the sign-in door; signed in it shows who
+     you are, lets you rename the label next to your marks, and signs out. */
+  function showSignIn(msg){
+    var signedIn = !!ME;
+    document.getElementById('uh').textContent = signedIn ? t('account') : t('signIn');
+    document.getElementById('up').textContent = signedIn
+      ? t('signedInAs')((ME && ME.email) || '')
+      : t('signInSub');
+    document.getElementById('upnote').hidden = signedIn;
+    document.getElementById('gsign').hidden = signedIn;
+    document.getElementById('gsign').disabled = false;
+    document.getElementById('gsigntxt').textContent = t('signInGoogle');
+    document.getElementById('signout').hidden = !signedIn;
+    document.getElementById('uclose').hidden = signedIn;
+    document.getElementById('namerow').hidden = !signedIn;
+    document.getElementById('signinerr').hidden = !msg;
+    document.getElementById('signinerr').textContent = msg || '';
+    uinput.value = signedIn ? (ME.name || '') : '';
+    uinput.placeholder = t('displayName');
+    document.getElementById('uadd').textContent = t('saveName');
+    uerr.hidden = true; uerr.textContent = '';
+    ulist.innerHTML = '';
+    umodal.hidden = false;
+  }
+  function hideUserModal(){ umodal.hidden = true; uerr.hidden = true; uerr.textContent = ''; }
+
+  function signInWithGoogle(){
+    var ret = location.origin + location.pathname;
+    var btn = document.getElementById('gsign');
+    btn.disabled = true;
+    document.getElementById('gsigntxt').textContent = t('redirecting');
+    apiFetch('/auth/config').then(function(cfg){
+      if(!cfg.google) throw new Error(t('notConfigured'));
+      // A real navigation, not fetch(): Google refuses to be framed, and the
+      // browser has to follow the redirect chain back with the token in the hash.
+      location.href = API + '/auth/google/start?ret=' + encodeURIComponent(ret);
+    }).catch(function(err){
+      btn.disabled = false;
+      document.getElementById('gsigntxt').textContent = t('signInGoogle');
+      showSignIn(err.message);
+    });
+  }
+  document.getElementById('gsign').onclick = signInWithGoogle;
+
+  /* Rename the label only: the key the notes are filed under never moves, so a
+     rename can never orphan what you have already written. */
+  function saveName(){
+    var name = uinput.value.trim();
+    if(name.length < 2){ uerr.hidden = false; uerr.textContent = t('nameBad'); return; }
+    apiFetch('/name', {method:'POST', body:{name:name}}).then(function(r){
+      ME = r.user; USERS[ME.key] = r.user;
+      try{ localStorage.setItem('rbk.user', ME.name); }catch(e){}
+      hideUserModal(); paintUser();
+      return pull();
+    }).catch(function(err){ uerr.hidden = false; uerr.textContent = err.message; });
+  }
+  document.getElementById('uadd').onclick = saveName;
+  uinput.addEventListener('keydown', function(e){ if(e.key === 'Enter') saveName(); });
+
+  document.getElementById('signout').onclick = function(){
+    apiFetch('/auth/logout', {method:'POST'}).catch(function(){});
+    TOKEN = null; ME = null; USERS = {}; SHARED = {}; TAGS = {}; NOTES = {}; PENDING = [];
+    savePending();
+    try{ localStorage.removeItem('rbk.token'); localStorage.removeItem('rbk.user'); }catch(e){}
+    paintUser(); hideUserModal(); render(); buildTagFilters(); showSignIn('');
+  };
+  // Browsing does not need an account; writing does. Closing the sheet leaves
+  // the list fully usable and the header chip still offers to sign in.
+  document.getElementById('uclose').onclick = hideUserModal;
+  document.getElementById('userbtn').onclick = function(){ showSignIn(''); };
+
+  /* Legacy browser data → the shared store.
+     The local copy is deleted ONLY after every note and tag has been read back
+     from the server and matched against what was uploaded. If the upload or the
+     verification fails, it stays put and the next load tries again. */
+  function normNote(v){
+    return String(v == null ? '' : v)
+      .replace(/\r\n/g, '\n').replace(/[ \t]+$/gm, '').replace(/\s+$/, '');
+  }
+
+  function migrateLocal(){
+    var rawT, rawN;
+    try{ rawT = localStorage.getItem('rbk.tags'); rawN = localStorage.getItem('rbk.notes'); }
+    catch(e){ return Promise.resolve(null); }
+    if(!rawT && !rawN) return Promise.resolve(null);
+    if(!ME) return Promise.resolve(null);
+
+    var tg = {}, nt = {};
+    try{ tg = JSON.parse(rawT || '{}') || {}; }catch(e){ tg = {}; }
+    try{ nt = JSON.parse(rawN || '{}') || {}; }catch(e){ nt = {}; }
+
+    var nNotes = 0, nTags = 0;
+    Object.keys(nt).forEach(function(k){ if(normNote(nt[k])) nNotes++; });
+    Object.keys(tg).forEach(function(k){ nTags += (tg[k] || []).length; });
+
+    if(!nNotes && !nTags){
+      try{ localStorage.removeItem('rbk.tags'); localStorage.removeItem('rbk.notes'); }catch(e){}
+      return Promise.resolve(null);
+    }
+
+    toast(t('importing'), 4000);
+    return apiFetch('/import', {method:'POST', body:{user:ME.name, notes:nt, tags:tg}})
+      .then(function(){ return pull(); })
+      .then(function(st){
+        var missing = [], notes = st.notes || [], tags = st.tags || [];
+
+        Object.keys(nt).forEach(function(song){
+          var want = normNote(nt[song]);
+          if(!want) return;
+          var row = null;
+          for(var i = 0; i < notes.length; i++){
+            if(notes[i].user === ME.key && notes[i].song === song){ row = notes[i]; break; }
+          }
+          if(!row || normNote(row.note) !== want.slice(0, 4000)) missing.push(song);
+        });
+        Object.keys(tg).forEach(function(song){
+          (tg[song] || []).forEach(function(tag){
+            var want = norm(tag).replace(/^#+/, '').trim();
+            if(!want) return;
+            var ok = false;
+            for(var i = 0; i < tags.length; i++){
+              if(tags[i].user === ME.key && tags[i].song === song && tags[i].tag === want){ ok = true; break; }
+            }
+            if(!ok) missing.push(song + ':' + tag);
+          });
+        });
+
+        if(missing.length){
+          toast(t('migFail')(missing.length), 9000);
+          return null;
+        }
+        try{
+          localStorage.removeItem('rbk.tags');
+          localStorage.removeItem('rbk.notes');
+        }catch(e){}
+        toast(t('migDone')(nNotes, nTags), 9000);
+        return st;
+      })
+      .catch(function(err){
+        toast(t('migNet')(err.message), 9000);
+        return null;
+      });
+  }
 
   /* ---------- load ---------- */
   fetch('realbook.json', {cache:'no-cache'}).then(function(r){ return r.json(); }).then(function(d){
@@ -717,6 +1297,55 @@
   }).catch(function(err){
     document.getElementById('sub').textContent = t('loadFail')(err);
   });
+
+  /* ---------- boot: resume the session, or ask the person to sign in ---------- */
+  (function boot(){
+    try{ PENDING = JSON.parse(localStorage.getItem('rbk.pending') || '[]') || []; }
+    catch(e){ PENDING = []; }
+
+    // The Google round trip returns with the session token in the hash. Take it,
+    // then clear it from the address bar so it cannot leak via a screenshot, a
+    // copied link or the browser's own history entry.
+    var hash = location.hash || '';
+    var mTok = /(?:^#|&)rbk_token=([^&]+)/.exec(hash);
+    var mErr = /(?:^#|&)rbk_error=([^&]+)/.exec(hash);
+    var signInError = mErr ? decodeURIComponent(mErr[1]) : '';
+    if(mTok){
+      TOKEN = decodeURIComponent(mTok[1]);
+      try{ localStorage.setItem('rbk.token', TOKEN); }catch(e){}
+    }
+    if(mTok || mErr){
+      try{ history.replaceState(null, '', location.pathname + location.search); }
+      catch(e){ location.hash = ''; }
+    }
+    if(!TOKEN){ try{ TOKEN = localStorage.getItem('rbk.token') || null; }catch(e){ TOKEN = null; } }
+
+    if(TOKEN){
+      apiFetch('/auth/me').then(function(r){
+        ME = r.user;
+        USERS[ME.key] = r.user;
+        try{ localStorage.setItem('rbk.user', ME.name); }catch(e){}
+        paintUser();
+        return pull().then(function(){ return migrateLocal(); });
+      }).catch(function(){
+        // apiFetch has already dropped a dead token and reopened the sign-in sheet.
+        if(!ME) showSignIn(signInError);
+      });
+    }else{
+      showSignIn(signInError);
+    }
+
+    setInterval(function(){
+      if(document.visibilityState === 'visible' && ME && navigator.onLine !== false){
+        pull().catch(function(){});
+      }
+    }, POLL_MS);
+    document.addEventListener('visibilitychange', function(){
+      if(document.visibilityState === 'visible' && ME) pull().catch(function(){});
+    });
+    window.addEventListener('online', function(){ flush(); pull().catch(function(){}); });
+    window.addEventListener('offline', function(){ setNet(false); });
+  })();
 
   if('serviceWorker' in navigator){
     navigator.serviceWorker.register('sw.js').catch(function(){});
