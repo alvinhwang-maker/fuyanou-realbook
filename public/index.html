@@ -263,6 +263,7 @@
     <div class="tagbar">
       <input id="tagin" type="text" placeholder="add a #tag…" autocapitalize="none" autocorrect="off" spellcheck="false">
       <button class="btn go" id="tagadd">Add</button>
+      <span class="nhint" id="taghint"></span>
     </div>
     <textarea id="notein" placeholder="Write a note about this tune — what to work on, who calls it, the version you like…" autocapitalize="sentences"></textarea>
     <div class="noterow">
@@ -548,6 +549,9 @@
       none: 'No song matches that.',
       composerUnknown: 'composer unknown', keyUnknown: 'key unknown',
       addTag: 'add a #tag…', add: 'Add', noteTitle: 'Your note & tags',
+      tagBad: 'That tag has no letters or numbers in it — nothing was saved.',
+      tagPending: 'typed, not added yet — press Add',
+      pendingWarn: function(n){ return n + ' change(s) have not reached the server yet — sign-out cancelled. Try again in a moment.'; },
       chordsHead: 'Identified chords', chordsBtn: 'Identified chords',
       chordsApprox: 'approximate — hand-written source', chordsExact: 'typeset source',
       chordsNote: 'Read off the page by OCR. The list is usually partial — compare it with the sheet.',
@@ -600,6 +604,9 @@
       none: '沒有符合的曲目。',
       composerUnknown: '作曲未知', keyUnknown: '調性未知',
       addTag: '新增 #標籤…', add: '新增', noteTitle: '我的筆記與標籤',
+      tagBad: '標籤至少需要一個文字或數字 — 剛才的內容沒有儲存。',
+      tagPending: '尚未新增 — 請按「新增」',
+      pendingWarn: function(n){ return '還有 ' + n + ' 項尚未存到伺服器 — 已取消登出，請稍後再試。'; },
       chordsHead: '辨識出的和弦', chordsBtn: '辨識出的和弦',
       chordsApprox: '近似值 — 手寫原稿', chordsExact: '印刷原稿',
       chordsNote: '由 OCR 從樂譜頁讀取。清單通常不完整 — 請與樂譜頁比對。',
@@ -657,6 +664,23 @@
   }
 
   function norm(x){ return (x||'').toString().toLowerCase(); }
+
+  /* Tag text, cleaned EXACTLY the way the worker cleans it (cleanTag): lower
+     case, leading # dropped, only letters / numbers / _ / - / space kept — in
+     any script — spaces collapsed, 40 chars.  The old filter here was
+     /[^a-z0-9\-_ ]/, which silently deleted every non-ASCII character: a
+     Chinese tag like 練習 became an empty string and vanished with no message,
+     even though the server accepts Unicode.  Keep the two implementations in
+     step: sync-worker/src/index.js cleanTag(). */
+  var TAG_MAX = 40;
+  function cleanTagInput(raw){
+    return (raw == null ? '' : String(raw)).toLowerCase()
+      .replace(/^#+/, '')
+      .replace(/[^\p{L}\p{N}\-_ ]+/gu, '')
+      .replace(/\s+/g, ' ')
+      .trim()
+      .slice(0, TAG_MAX);
+  }
 
   /* The index covers EVERYONE's marks, so a search or a #tag finds the tune even
      if it was somebody else who filed it that way. */
@@ -829,6 +853,25 @@
   });
 
   var tagin = document.getElementById('tagin');
+  var taghint = document.getElementById('taghint');
+  /* Tags typed into the box but never submitted, kept per tune — in memory and
+     mirrored to sessionStorage, so closing the panel or reloading no longer
+     throws away what was typed. (Typing a tag and not pressing Add is the
+     easiest way to believe a tag exists when it never did.) */
+  var tagDraft = {};
+  try{ tagDraft = JSON.parse(sessionStorage.getItem('rbk.tagdraft') || '{}') || {}; }catch(e){ tagDraft = {}; }
+  function saveTagDraft(){
+    try{ sessionStorage.setItem('rbk.tagdraft', JSON.stringify(tagDraft)); }catch(e){}
+  }
+  function updateTagHint(){
+    taghint.textContent = (tagin.value || '').trim() ? t('tagPending') : '';
+  }
+  tagin.addEventListener('input', function(){
+    var s = songs[idx];
+    var v = tagin.value;
+    if(s){ if(v.trim()) tagDraft[s.id] = v; else delete tagDraft[s.id]; saveTagDraft(); }
+    updateTagHint();
+  });
   // Light up ✎ when this song already has a note or tags, so the panel being hidden
   // never hides the fact that you wrote something.
   function updateNoteBtn(){
@@ -850,6 +893,9 @@
       };
       bar.insertBefore(b, tagin);
     });
+    // Reopen the tune and the half-typed tag is still there, flagged as unsaved.
+    if(document.activeElement !== tagin) tagin.value = tagDraft[s.id] || '';
+    updateTagHint();
     updateNoteBtn();
   }
   /* Other people's tags and notes on the open tune, each in their own colour. */
@@ -866,10 +912,24 @@
   }
   function addTag(){
     var s = songs[idx]; if(!s) return;
-    var tag = norm(tagin.value.trim()).replace(/^#/, '').replace(/[^a-z0-9\-_ ]/g, '').trim();
-    if(!tag) return;
+    if(!(tagin.value || '').trim()) return;          // nothing typed: do nothing
+    var tag = cleanTagInput(tagin.value);
+    if(!tag){
+      // Say why instead of silently swallowing it.
+      toast(t('tagBad'), 4000);
+      return;
+    }
+    if(!ME){ showSignIn(t('signInToWrite')); return; }  // keep the draft, ask to sign in
+    if(tagsOf(s).indexOf(tag) >= 0){
+      // Already on this tune: clear the box, no pointless round trip.
+      delete tagDraft[s.id]; saveTagDraft();
+      tagin.value = ''; updateTagHint();
+      return;
+    }
+    delete tagDraft[s.id]; saveTagDraft();
+    tagin.value = ''; updateTagHint();
     putTag(s.id, tag, 'add');
-    tagin.value = ''; renderTagbar(); renderOthers(); apply();
+    renderTagbar(); renderOthers(); apply();
   }
   document.getElementById('tagadd').onclick = addTag;
   tagin.addEventListener('keydown', function(e){ if(e.key === 'Enter') addTag(); });
@@ -1198,6 +1258,14 @@
   uinput.addEventListener('keydown', function(e){ if(e.key === 'Enter') saveName(); });
 
   document.getElementById('signout').onclick = function(){
+    /* Queued writes belong to whoever is signed in and are thrown away by the
+       reset below, so signing out mid-sync silently deleted them. Refuse while
+       anything is still pending — the queue drains on the next poll anyway. */
+    if(PENDING.length){
+      flush();
+      toast(t('pendingWarn')(PENDING.length), 6000);
+      return;
+    }
     apiFetch('/auth/logout', {method:'POST'}).catch(function(){});
     TOKEN = null; ME = null; USERS = {}; SHARED = {}; TAGS = {}; NOTES = {}; PENDING = [];
     savePending();
@@ -1255,7 +1323,12 @@
         });
         Object.keys(tg).forEach(function(song){
           (tg[song] || []).forEach(function(tag){
-            var want = norm(tag).replace(/^#+/, '').trim();
+            /* Compare with the same normalisation the server stores under
+               (cleanTagInput mirrors cleanTag). Comparing the raw local string
+               made any tag with punctuation — "fast!", "bebop/ballad" — look
+               missing, which failed the whole verification and blocked the
+               migration forever. */
+            var want = cleanTagInput(tag);
             if(!want) return;
             var ok = false;
             for(var i = 0; i < tags.length; i++){
@@ -1326,7 +1399,12 @@
         USERS[ME.key] = r.user;
         try{ localStorage.setItem('rbk.user', ME.name); }catch(e){}
         paintUser();
-        return pull().then(function(){ return migrateLocal(); });
+        // Drain anything queued from an earlier session (offline, expired
+        // token) before trusting new writes: PENDING used to be flushed only by
+        // a fresh queue() call, so a tag that failed to upload sat in
+        // localStorage forever and looked saved.
+        return pull().then(function(){ return migrateLocal(); })
+          .then(function(){ flush(); });
       }).catch(function(){
         // apiFetch has already dropped a dead token and reopened the sign-in sheet.
         if(!ME) showSignIn(signInError);
@@ -1337,11 +1415,12 @@
 
     setInterval(function(){
       if(document.visibilityState === 'visible' && ME && navigator.onLine !== false){
+        flush();
         pull().catch(function(){});
       }
     }, POLL_MS);
     document.addEventListener('visibilitychange', function(){
-      if(document.visibilityState === 'visible' && ME) pull().catch(function(){});
+      if(document.visibilityState === 'visible' && ME){ flush(); pull().catch(function(){}); }
     });
     window.addEventListener('online', function(){ flush(); pull().catch(function(){}); });
     window.addEventListener('offline', function(){ setNet(false); });
