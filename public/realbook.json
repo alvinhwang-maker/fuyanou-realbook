@@ -1,6 +1,6 @@
 {
  "edition": "Real Book library",
- "generated": "2026-11-04T01:53:13",
+ "generated": "2026-11-04T01:54:57",
  "count": 2013,
  "books": [
   {
@@ -113,7 +113,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "Do"
+   ],
    "chordsApprox": true,
    "style": "Bright (even 8ths)",
    "album": null,
@@ -2363,7 +2365,9 @@
    "chords": [
     "D-7",
     "C-7",
-    "Eo"
+    "Eo",
+    "F-7",
+    "D-7"
    ],
    "chordsApprox": true,
    "style": "Latin",
@@ -2386,7 +2390,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "Abo"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": null,
@@ -2479,7 +2485,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "B/E"
+   ],
    "chordsApprox": true,
    "style": "Rock",
    "album": null,
@@ -5800,7 +5808,10 @@
     "Do",
     "A7",
     "F-6",
-    "F-7"
+    "F-7",
+    "C69",
+    "Ab9",
+    "Do"
    ],
    "chordsApprox": true,
    "style": "Med. Ballad",
@@ -10017,7 +10028,9 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "C-"
+    "C-",
+    "E-",
+    "G6"
    ],
    "chordsApprox": true,
    "style": null,
@@ -10084,7 +10097,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "B7"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": null,
@@ -14320,7 +14335,8 @@
    "keySource": null,
    "chords": [
     "Emi",
-    "Dmi"
+    "Dmi",
+    "Ami"
    ],
    "chordsApprox": true,
    "style": null,
@@ -20494,7 +20510,12 @@
    "chords": [
     "GM",
     "G7",
-    "C6"
+    "C6",
+    "GMi",
+    "A13",
+    "B7(5)",
+    "AM",
+    "G7"
    ],
    "chordsApprox": true,
    "style": "Med. Funk",
@@ -20703,7 +20724,9 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "Edim"
+    "Edim",
+    "F13",
+    "E13"
    ],
    "chordsApprox": true,
    "style": null,
@@ -21627,7 +21650,8 @@
     "B7(69)",
     "A13(65)",
     "A7(#3)",
-    "E13"
+    "E13",
+    "E/D"
    ],
    "chordsApprox": true,
    "style": "Medium Funk",
@@ -21656,7 +21680,8 @@
     "B7(69)",
     "A7(69)",
     "G13(65)",
-    "B/C"
+    "B/C",
+    "G13(b9)"
    ],
    "chordsApprox": true,
    "style": "Med. Funk",
@@ -21666,7 +21691,8 @@
    "confidence": "medium",
    "sortTitle": "endangered species (keyboard)",
    "extraPages": [
-    102
+    102,
+    103
    ]
   },
   {
@@ -22191,6 +22217,7 @@
    "chords": [
     "Edim",
     "Ddim",
+    "F7(#4)",
     "F7(#4)"
    ],
    "chordsApprox": true,
@@ -22234,7 +22261,8 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "Bo"
+    "Bo",
+    "F13"
    ],
    "chordsApprox": true,
    "style": null,
@@ -22340,7 +22368,14 @@
     "E/B",
     "AM",
     "F7",
-    "F6"
+    "F6",
+    "G/D",
+    "GM",
+    "DMi",
+    "F/G",
+    "AM",
+    "Gdim",
+    "F7"
    ],
    "chordsApprox": true,
    "style": "Med.-Slow Funk",
@@ -22350,7 +22385,8 @@
    "confidence": "medium",
    "sortTitle": "goin' home (bass)",
    "extraPages": [
-    136
+    136,
+    137
    ]
   },
   {
@@ -22421,6 +22457,15 @@
     "E7(#9)",
     "EM",
     "D7(#5)",
+    "C13",
+    "A7(#5)",
+    "G13",
+    "E7(#9)",
+    "Adimsus",
+    "DMi",
+    "E7",
+    "A7(#5)",
+    "B7(#5)",
     "C13"
    ],
    "chordsApprox": true,
@@ -24766,7 +24811,12 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "EM",
+    "F13",
+    "Emi",
+    "EMi"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": null,
@@ -24775,7 +24825,8 @@
    "confidence": "low",
    "sortTitle": "never givin' up",
    "extraPages": [
-    249
+    249,
+    250
    ]
   },
   {
@@ -27626,7 +27677,10 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "D13",
+    "Adim"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": null,
@@ -27635,7 +27689,8 @@
    "confidence": "low",
    "sortTitle": "three marias (keyboard)",
    "extraPages": [
-    379
+    379,
+    380
    ]
   },
   {
@@ -29352,7 +29407,16 @@
     "F7",
     "A7",
     "B7",
-    "Gm7"
+    "Gm7",
+    "Em7",
+    "Gb/Db",
+    "Ebm7",
+    "Ebm7/Db",
+    "Db7",
+    "Gb7",
+    "Abm7",
+    "Ebm/Db",
+    "Dbo"
    ],
    "chordsApprox": false,
    "style": null,
@@ -29579,7 +29643,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "G+"
+   ],
    "chordsApprox": false,
    "style": null,
    "album": null,
@@ -30053,7 +30119,14 @@
     "G7",
     "A7",
     "D7",
-    "Em7"
+    "Em7",
+    "Dm7",
+    "G7",
+    "A7",
+    "D7",
+    "Em",
+    "Ebm7",
+    "E7"
    ],
    "chordsApprox": false,
    "style": null,
@@ -30173,7 +30246,17 @@
     "Ddim7",
     "Dbo7",
     "Cdim7",
-    "Fm7"
+    "Fm7",
+    "Bb7",
+    "Edim7",
+    "Bb/F",
+    "G7",
+    "F#m7",
+    "B7",
+    "Eb7",
+    "F7",
+    "A/E",
+    "Ab/Eb"
    ],
    "chordsApprox": false,
    "style": null,
@@ -30479,7 +30562,10 @@
     "Fm7",
     "Db7",
     "Eb/Bb",
-    "Ebo7"
+    "Ebo7",
+    "D/Bb",
+    "Ab/Bb",
+    "C/D"
    ],
    "chordsApprox": false,
    "style": null,
@@ -30673,7 +30759,13 @@
     "D7",
     "Dbm7",
     "F#7",
-    "Bm7"
+    "Bm7",
+    "C#7",
+    "B7",
+    "E7",
+    "G7",
+    "F7",
+    "Ab7sus4"
    ],
    "chordsApprox": false,
    "style": null,
@@ -31443,7 +31535,12 @@
     "F#+7",
     "Em7",
     "D/F#",
-    "B/D#"
+    "B/D#",
+    "B/D#",
+    "B/A",
+    "E7",
+    "D7",
+    "E/G#"
    ],
    "chordsApprox": false,
    "style": null,
@@ -31468,7 +31565,13 @@
    "keySource": null,
    "chords": [
     "F7",
-    "G/B"
+    "G/B",
+    "F7",
+    "D7",
+    "F+7",
+    "Bbmaj7",
+    "F/A",
+    "A+7"
    ],
    "chordsApprox": false,
    "style": null,
@@ -32480,7 +32583,15 @@
     "C#m",
     "Dm7",
     "G7",
-    "F/A"
+    "F/A",
+    "F/G",
+    "G7",
+    "Am7",
+    "F/A",
+    "D7",
+    "Am",
+    "D/E",
+    "Bm7"
    ],
    "chordsApprox": false,
    "style": null,
@@ -32610,7 +32721,11 @@
    "keySource": null,
    "chords": [
     "Bb7",
-    "F7"
+    "F7",
+    "F7",
+    "G7",
+    "Cm",
+    "Cm7"
    ],
    "chordsApprox": false,
    "style": null,
@@ -33214,7 +33329,12 @@
     "F7",
     "G7",
     "G13",
-    "F+7"
+    "F+7",
+    "G7",
+    "F13",
+    "Edim",
+    "A7/E",
+    "D/Eb"
    ],
    "chordsApprox": false,
    "style": null,
@@ -33690,7 +33810,8 @@
     "Fm7",
     "A7",
     "Abmaj7",
-    "Db7"
+    "Db7",
+    "E7"
    ],
    "chordsApprox": false,
    "style": null,
@@ -33828,7 +33949,12 @@
     "C7",
     "C+7",
     "F7",
-    "Fm7"
+    "Fm7",
+    "Abm7/Gb",
+    "Fm7",
+    "C7",
+    "Bb7",
+    "Gm7"
    ],
    "chordsApprox": false,
    "style": null,
@@ -33855,7 +33981,14 @@
     "C7",
     "Cm7",
     "F7",
-    "Eb7"
+    "Eb7",
+    "Gm7",
+    "C7",
+    "Am7",
+    "D7",
+    "G7",
+    "G7/F",
+    "A7"
    ],
    "chordsApprox": false,
    "style": null,
@@ -34342,7 +34475,17 @@
     "C7",
     "B7",
     "D7",
-    "Edim7"
+    "Edim7",
+    "G7",
+    "C7",
+    "B7",
+    "Bb7",
+    "A7",
+    "A+7",
+    "D7",
+    "Em7",
+    "Fm",
+    "Ab7"
    ],
    "chordsApprox": false,
    "style": "Med. Swing",
@@ -34615,7 +34758,10 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "A7"
+    "A7",
+    "C7",
+    "D7/Bb",
+    "Gm7"
    ],
    "chordsApprox": false,
    "style": null,
@@ -35059,7 +35205,13 @@
     "Fm7",
     "Abm7",
     "Gbm7",
-    "Gm7"
+    "Gm7",
+    "Am7",
+    "Gm7",
+    "Dm7",
+    "Cm7",
+    "Gm",
+    "Fm7"
    ],
    "chordsApprox": false,
    "style": null,
@@ -35144,6 +35296,14 @@
     "A7",
     "G7",
     "D9",
+    "C7",
+    "Bb7",
+    "G7",
+    "Em7",
+    "A7",
+    "Ebm7",
+    "Ab7",
+    "Dm7",
     "C7",
     "Bb7"
    ],
@@ -35772,7 +35932,11 @@
     "F7",
     "E7",
     "Em7",
-    "A7"
+    "A7",
+    "G7",
+    "Ebmi",
+    "Ab7",
+    "F/G"
    ],
    "chordsApprox": false,
    "style": null,
@@ -36115,7 +36279,12 @@
     "Am7",
     "Abm7",
     "Em7",
-    "C7"
+    "C7",
+    "G7",
+    "F7",
+    "B7",
+    "C7",
+    "Em"
    ],
    "chordsApprox": false,
    "style": "Medium Swing",
@@ -38960,7 +39129,8 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "F13"
+    "F13",
+    "E6"
    ],
    "chordsApprox": false,
    "style": "Freely",
@@ -38970,7 +39140,8 @@
    "confidence": "medium",
    "sortTitle": "blue spirits (harmony)",
    "extraPages": [
-    61
+    61,
+    62
    ]
   },
   {
@@ -39140,7 +39311,10 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "FMi",
+    "GMi"
+   ],
    "chordsApprox": false,
    "style": "Fast Swing",
    "album": null,
@@ -39686,7 +39860,10 @@
    "keySource": null,
    "chords": [
     "Bb13(69)",
-    "FMi"
+    "FMi",
+    "Bb13(69)",
+    "Gdim",
+    "F#Mi"
    ],
    "chordsApprox": false,
    "style": "Med. Swing",
@@ -41791,7 +41968,8 @@
    "keySource": null,
    "chords": [
     "EbMi",
-    "Ab13"
+    "Ab13",
+    "B7"
    ],
    "chordsApprox": false,
    "style": "Med.-Fast Swing",
@@ -42158,7 +42336,8 @@
    "keySource": null,
    "chords": [
     "Adim",
-    "DMi"
+    "DMi",
+    "G(5)"
    ],
    "chordsApprox": false,
    "style": "Medium Funk",
@@ -42237,7 +42416,14 @@
     "B13",
     "G13(11)",
     "Ebdim",
-    "A13(69)"
+    "A13(69)",
+    "AbMi",
+    "Bb7",
+    "Ebmi",
+    "EbMi",
+    "FMi7(b5)",
+    "Gb13",
+    "B13(69)"
    ],
    "chordsApprox": false,
    "style": "Freely (Intro)",
@@ -42247,7 +42433,8 @@
    "confidence": "medium",
    "sortTitle": "last season (piano/rhythm)",
    "extraPages": [
-    219
+    219,
+    220
    ]
   },
   {
@@ -42558,6 +42745,14 @@
    "keySource": null,
    "chords": [
     "G#M",
+    "G#M(11)",
+    "A13",
+    "CMi",
+    "G#M",
+    "Em",
+    "BM",
+    "EMi",
+    "Do",
     "G#M(11)"
    ],
    "chordsApprox": false,
@@ -42568,7 +42763,8 @@
    "confidence": "medium",
    "sortTitle": "love's haunts (bass)",
    "extraPages": [
-    235
+    235,
+    236
    ]
   },
   {
@@ -42757,7 +42953,9 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "EbM"
+    "EbM",
+    "A7",
+    "Adim"
    ],
    "chordsApprox": false,
    "style": "Rubato Straight 8th's",
@@ -42960,7 +43158,13 @@
     "AbM",
     "C#9(11)",
     "D9(11)",
-    "AbMi"
+    "AbMi",
+    "C#9(11)",
+    "G13",
+    "F9(#11)",
+    "Edim",
+    "FMi",
+    "E9"
    ],
    "chordsApprox": false,
    "style": "Latin Fusion",
@@ -43441,7 +43645,12 @@
     "Ab13",
     "F#M7(65)",
     "B13(79)",
-    "B13(11)"
+    "B13(11)",
+    "FMi",
+    "A13",
+    "Bo",
+    "A7(5)",
+    "DMi"
    ],
    "chordsApprox": false,
    "style": "Medium Bossa",
@@ -43808,7 +44017,11 @@
     "FMi7(11)",
     "Ebmi",
     "GMi7(65)",
-    "Co"
+    "Co",
+    "EbMi",
+    "FMi",
+    "AbMi",
+    "Adim"
    ],
    "chordsApprox": false,
    "style": "Medium Funk Shuffle",
@@ -43834,7 +44047,11 @@
    "chords": [
     "Adim",
     "FMi",
-    "Ebmi"
+    "Ebmi",
+    "Ebmi",
+    "EMi",
+    "Adim",
+    "FMi"
    ],
    "chordsApprox": false,
    "style": "Med. Funk Shuffle",
@@ -43918,7 +44135,11 @@
     "Db13",
     "Db7(#9)",
     "C7(69)",
-    "GM7(65)"
+    "GM7(65)",
+    "FM7(65)",
+    "Db13",
+    "BbMi",
+    "EbMi"
    ],
    "chordsApprox": false,
    "style": "Med. Swing (in 2)",
@@ -43946,7 +44167,12 @@
     "G13",
     "FM9(65)",
     "Bb7(65)",
-    "Edim"
+    "Edim",
+    "F13",
+    "Bb13(69)",
+    "AM",
+    "FM7(65)",
+    "G13"
    ],
    "chordsApprox": false,
    "style": "Medium Swing",
@@ -43972,7 +44198,16 @@
    "chords": [
     "FM7(65)",
     "FMi",
-    "CM7(65)"
+    "CM7(65)",
+    "EMi",
+    "Bdim",
+    "FM7(65)",
+    "FM",
+    "Bb7(#3)",
+    "Abmi",
+    "CM",
+    "FMi7(b5)",
+    "EbMi"
    ],
    "chordsApprox": false,
    "style": "Med. Swing Stop Time till letter B",
@@ -44020,7 +44255,14 @@
    "keySource": null,
    "chords": [
     "Db13",
-    "Bdim"
+    "Bdim",
+    "Cm",
+    "Adim",
+    "DMi",
+    "Cm",
+    "Bb7",
+    "Db13",
+    "Bb13"
    ],
    "chordsApprox": false,
    "style": "Medium Straight 8th's",
@@ -44046,7 +44288,11 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "Cm"
+    "Cm",
+    "FMi",
+    "Adim",
+    "Cm",
+    "CMi"
    ],
    "chordsApprox": false,
    "style": "Medium Straight 8th's",
@@ -44097,7 +44343,8 @@
     "GM7(65)",
     "Bdim",
     "Bb7(69)",
-    "AbMi"
+    "AbMi",
+    "Bosus"
    ],
    "chordsApprox": false,
    "style": "Fast Swing",
@@ -44171,7 +44418,8 @@
    "keySource": null,
    "chords": [
     "F7",
-    "Co"
+    "Co",
+    "F7"
    ],
    "chordsApprox": false,
    "style": "Med. Motown",
@@ -44199,7 +44447,14 @@
     "DMi",
     "Db9(#11)",
     "AMi",
-    "Ami"
+    "Ami",
+    "B13",
+    "DMi",
+    "D69(11)",
+    "EM",
+    "AMi",
+    "Db9(#11)",
+    "Co"
    ],
    "chordsApprox": false,
    "style": "Medium Gospel Shuffle",
@@ -44227,7 +44482,11 @@
     "Emi",
     "G6",
     "AM",
-    "B13"
+    "B13",
+    "DMi",
+    "C9",
+    "Ami",
+    "AM"
    ],
    "chordsApprox": false,
    "style": "Medium Gospel Shuffle",
@@ -44250,7 +44509,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "Go"
+   ],
    "chordsApprox": false,
    "style": "Even 8th notes",
    "album": null,
@@ -44276,7 +44537,13 @@
     "F13(69)",
     "AMi",
     "Bdim",
-    "Co"
+    "Co",
+    "B13(79)",
+    "AMi",
+    "G(5)",
+    "Ebdim",
+    "A7(#5)",
+    "F13(69)"
    ],
    "chordsApprox": false,
    "style": "Fast Funky Swing",
@@ -44302,7 +44569,8 @@
    "chords": [
     "DMi",
     "C6",
-    "DM"
+    "DM",
+    "DMi"
    ],
    "chordsApprox": false,
    "style": "Medium Ballad",
@@ -44336,7 +44604,10 @@
     "D7(5)",
     "B13",
     "Edim",
-    "Edimsus"
+    "Edimsus",
+    "EMi",
+    "DM7(11)",
+    "G13(69)"
    ],
    "chordsApprox": false,
    "style": "Medium Bossa",
@@ -44395,7 +44666,11 @@
     "DMi",
     "Em",
     "Adim",
-    "C7(69)"
+    "C7(69)",
+    "G7",
+    "C7(69)",
+    "F6",
+    "C7(9)"
    ],
    "chordsApprox": false,
    "style": "Beguine or Medium Jazz (or 6/4 Latin)",
@@ -44452,7 +44727,18 @@
     "Em",
     "EMi",
     "EbMi",
-    "DM7(65)"
+    "DM7(65)",
+    "FMi",
+    "G13(69)",
+    "Db13",
+    "GM7(65)",
+    "EMi",
+    "Bb7",
+    "Adim",
+    "G7(5)",
+    "G7(65)",
+    "Cm",
+    "Ddim"
    ],
    "chordsApprox": false,
    "style": "Med. Swinging Latin",
@@ -44481,7 +44767,16 @@
     "AM",
     "F#M7(65)",
     "Abo",
-    "BM"
+    "BM",
+    "Am",
+    "AMi",
+    "Ddim",
+    "Ab13",
+    "G13",
+    "Gdim",
+    "Cdimsus",
+    "BM",
+    "Edim"
    ],
    "chordsApprox": false,
    "style": "Freely",
@@ -44607,6 +44902,11 @@
     "Ab13",
     "Ebdim",
     "Edimsus",
+    "Edim",
+    "Edimsus",
+    "AM7(65)",
+    "Bb7(#5)",
+    "Do",
     "Edim"
    ],
    "chordsApprox": false,
@@ -44691,7 +44991,10 @@
     "Ebmi",
     "GM7(65)",
     "B13",
-    "EMi"
+    "EMi",
+    "Ebdim7",
+    "FMi",
+    "Bbdim"
    ],
    "chordsApprox": false,
    "style": "Bright Latin",
@@ -44750,7 +45053,9 @@
     "Gb9",
     "B13(#11)",
     "Ebdim",
-    "Eb13"
+    "Eb13",
+    "Ebdim",
+    "Ab13"
    ],
    "chordsApprox": false,
    "style": "Medium Swing",
@@ -44778,7 +45083,10 @@
     "Cdim",
     "Abo",
     "Abdim",
-    "G13"
+    "G13",
+    "F9",
+    "Gdim",
+    "Cdim"
    ],
    "chordsApprox": false,
    "style": "Medium",
@@ -44878,7 +45186,14 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "Bb13",
+    "G13",
+    "E7(#5)",
+    "E13(#11)",
+    "F#Mi",
+    "GMi"
+   ],
    "chordsApprox": false,
    "style": "Medium Straight 8th's/Funk",
    "album": null,
@@ -44928,7 +45243,9 @@
    "chords": [
     "G13(69)",
     "C13",
-    "F7"
+    "F7",
+    "F7",
+    "E7"
    ],
    "chordsApprox": false,
    "style": "Freely",
@@ -44954,7 +45271,8 @@
    "chords": [
     "B7(69)",
     "E7",
-    "C6"
+    "C6",
+    "B7(69)"
    ],
    "chordsApprox": false,
    "style": "Medium or Ballad",
@@ -44979,7 +45297,9 @@
    "keySource": null,
    "chords": [
     "FM7",
-    "Co"
+    "Co",
+    "Adim",
+    "Bb7"
    ],
    "chordsApprox": false,
    "style": "Med. Pop",
@@ -45030,7 +45350,8 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "Co"
+    "Co",
+    "F#M"
    ],
    "chordsApprox": false,
    "style": "Med. Funk",
@@ -45056,7 +45377,8 @@
    "chords": [
     "C#Mi",
     "A#m7(b5)",
-    "G#M"
+    "G#M",
+    "C#M"
    ],
    "chordsApprox": false,
    "style": "Med. Funk",
@@ -45110,7 +45432,16 @@
     "E7(9)",
     "D7(9)",
     "F13",
-    "Ab13"
+    "Ab13",
+    "Ad",
+    "F#13(69)",
+    "E7",
+    "BM",
+    "F7",
+    "G7",
+    "BM7(65)",
+    "AMi",
+    "C#M7(65)"
    ],
    "chordsApprox": false,
    "style": "Medium Jazz 4",
@@ -45137,7 +45468,13 @@
     "C13",
     "F6",
     "GMi",
-    "AMi"
+    "AMi",
+    "GMi",
+    "AMi",
+    "F6",
+    "Abdim",
+    "Ami",
+    "Abmi"
    ],
    "chordsApprox": false,
    "style": "Medium Ballad (or Latin)",
@@ -45226,7 +45563,14 @@
     "DMi",
     "Ebdim",
     "Eb7(69)",
-    "Bb9(65)"
+    "Bb9(65)",
+    "Eb7(69)",
+    "Bb6",
+    "CMi",
+    "DMi",
+    "GMi",
+    "Ebdim",
+    "F7"
    ],
    "chordsApprox": false,
    "style": "Medium Jazz",
@@ -45252,7 +45596,8 @@
    "chords": [
     "F13",
     "D7(69)",
-    "Co"
+    "Co",
+    "F13"
    ],
    "chordsApprox": false,
    "style": "Medium Funk Ballad",
@@ -45279,7 +45624,8 @@
     "F13",
     "E13",
     "E7",
-    "D7(69)"
+    "D7(69)",
+    "Ami"
    ],
    "chordsApprox": false,
    "style": "Medium Funk Ballad",
@@ -45304,7 +45650,10 @@
    "keySource": null,
    "chords": [
     "C#Mi",
-    "Co"
+    "Co",
+    "Bm",
+    "Am",
+    "Ddim"
    ],
    "chordsApprox": false,
    "style": "Med. Funk Shuffle (16th's swing)",
@@ -45400,7 +45749,17 @@
     "C13(#11)",
     "C13(11)",
     "D13",
-    "D13(69)"
+    "D13(69)",
+    "D7(69)",
+    "F#13",
+    "Em",
+    "DM13",
+    "Bm",
+    "BM7(65)",
+    "Ab13",
+    "Bb9(#11)",
+    "Eb9(#1)",
+    "Db7(#9)"
    ],
    "chordsApprox": false,
    "style": "Medium Swing",
@@ -45423,7 +45782,10 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "A13(69)",
+    "DMi"
+   ],
    "chordsApprox": false,
    "style": "Med.-Fast Latin",
    "album": null,
@@ -45536,7 +45898,10 @@
     "Am",
     "AM9",
     "E7",
-    "BM"
+    "BM",
+    "Edim",
+    "F7(5)",
+    "Am"
    ],
    "chordsApprox": false,
    "style": "Medium Ballad",
@@ -45561,7 +45926,8 @@
    "keySource": null,
    "chords": [
     "B13",
-    "Co"
+    "Co",
+    "B13"
    ],
    "chordsApprox": false,
    "style": "Medium Slow",
@@ -45586,7 +45952,8 @@
    "keySource": null,
    "chords": [
     "Do",
-    "G#Mi"
+    "G#Mi",
+    "Adim"
    ],
    "chordsApprox": false,
    "style": "Med. Rock Ballad",
@@ -45612,7 +45979,9 @@
    "chords": [
     "G#+",
     "E7",
-    "B13"
+    "B13",
+    "G#+",
+    "Bb7"
    ],
    "chordsApprox": false,
    "style": "Medium Ballad",
@@ -45746,7 +46115,15 @@
     "F#7(69)",
     "G#M7(65)",
     "C7(9)",
-    "DM"
+    "DM",
+    "G7(69)",
+    "G7(5)",
+    "Bb7(69)",
+    "Bbdim",
+    "Am7",
+    "GM7(65)",
+    "C7(69)",
+    "DM7(65)"
    ],
    "chordsApprox": false,
    "style": "Ballad",
@@ -45933,7 +46310,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "Eb7sus4"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": "Treasure Island",
@@ -45957,7 +46336,9 @@
    "keySource": null,
    "chords": [
     "DM7",
-    "EM"
+    "EM",
+    "B/F",
+    "AM7"
    ],
    "chordsApprox": true,
    "style": null,
@@ -45981,7 +46362,10 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "A-7"
+    "A-7",
+    "A7",
+    "C7",
+    "G7"
    ],
    "chordsApprox": true,
    "style": null,
@@ -46030,7 +46414,14 @@
     "A-7",
     "C7",
     "F/A",
-    "G-7"
+    "G-7",
+    "D-7",
+    "Eb-7",
+    "A-7",
+    "G-7",
+    "A7",
+    "F/A",
+    "C7sus4(69)"
    ],
    "chordsApprox": true,
    "style": null,
@@ -46121,6 +46512,7 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
+    "G7",
     "G7"
    ],
    "chordsApprox": true,
@@ -46145,7 +46537,12 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "F/A"
+    "F/A",
+    "F/A",
+    "Eb/G",
+    "FM",
+    "Edim",
+    "FM"
    ],
    "chordsApprox": true,
    "style": null,
@@ -46173,7 +46570,9 @@
    "chords": [
     "Eb/Bb",
     "A-7",
-    "Gb7(65)"
+    "Gb7(65)",
+    "G7sus4",
+    "A-7"
    ],
    "chordsApprox": true,
    "style": null,
@@ -46203,7 +46602,12 @@
     "G7",
     "A-7",
     "C/E",
-    "G7(9)"
+    "G7(9)",
+    "C-7",
+    "A-7",
+    "D-",
+    "E-7",
+    "G7(69)"
    ],
    "chordsApprox": true,
    "style": null,
@@ -46266,7 +46670,13 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "Cm",
+    "Fm",
+    "E/G",
+    "Dm(5)",
+    "Fm7"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": "My Song",
@@ -46319,7 +46729,10 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "A7",
+    "D7"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": "Nude Ants",
@@ -46347,7 +46760,8 @@
     "A-",
     "D-",
     "E7(11)",
-    "A7"
+    "A7",
+    "Dd"
    ],
    "chordsApprox": true,
    "style": null,
@@ -46376,7 +46790,15 @@
     "A7",
     "C-7",
     "A-7",
-    "E-"
+    "E-",
+    "B-7",
+    "D-7",
+    "D7(65)",
+    "B7",
+    "F6",
+    "Bdim",
+    "E-",
+    "E/G"
    ],
    "chordsApprox": true,
    "style": null,
@@ -46402,7 +46824,23 @@
    "chords": [
     "Em",
     "Am",
-    "Dm"
+    "Dm",
+    "Bdim",
+    "Abm",
+    "Gm",
+    "Cm",
+    "Adim",
+    "Em",
+    "Dm",
+    "Ddim",
+    "Bbm",
+    "Bbdim",
+    "Gm",
+    "Am",
+    "Bdim",
+    "Em",
+    "Fm",
+    "Bb/Ab"
    ],
    "chordsApprox": true,
    "style": null,
@@ -46415,7 +46853,12 @@
     73,
     74,
     75,
-    80
+    76,
+    77,
+    78,
+    79,
+    80,
+    81
    ]
   },
   {
@@ -46669,7 +47112,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "Bo7"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": null,
@@ -46748,7 +47193,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "Co"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": "Sun Bear Concert",
@@ -46781,7 +47228,14 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
-    "Em"
+    "Em",
+    "G#m",
+    "C#m",
+    "Em",
+    "Bm/D",
+    "Bmsus4/C#",
+    "Bsus4/F#",
+    "Bm"
    ],
    "chordsApprox": true,
    "style": null,
@@ -46905,7 +47359,13 @@
     "E9",
     "B7",
     "Em9",
-    "G#m"
+    "G#m",
+    "F#m7",
+    "B7",
+    "Em9",
+    "D/A",
+    "G/A",
+    "B/A"
    ],
    "chordsApprox": true,
    "style": null,
@@ -47103,7 +47563,27 @@
     "Bdim7",
     "D7",
     "G7",
-    "Dm"
+    "Dm",
+    "Am7",
+    "Abd",
+    "Gm7",
+    "C7",
+    "Am",
+    "Bb7",
+    "Dm7",
+    "BbM7",
+    "Em7",
+    "FM7",
+    "Gm7",
+    "G7",
+    "C7",
+    "A7",
+    "Am7",
+    "Abd",
+    "BbM7",
+    "C7sus4",
+    "Am/C",
+    "Do"
    ],
    "chordsApprox": true,
    "style": null,
@@ -47179,7 +47659,83 @@
    "keySource": null,
    "chords": [
     "Cm7",
-    "G7"
+    "G7",
+    "Fm",
+    "C7",
+    "Fm7",
+    "Cm",
+    "Dm7",
+    "G7",
+    "Bb7",
+    "C7sus4",
+    "G7",
+    "Fm7",
+    "C7sus4",
+    "C7",
+    "Bb7",
+    "E7",
+    "F#7sus4",
+    "F#7",
+    "Fm7",
+    "C7",
+    "Abdim",
+    "G7",
+    "C7sus4",
+    "Bb7sus4",
+    "C7",
+    "Fm6",
+    "Abdim",
+    "G7",
+    "C7sus4",
+    "Fm7",
+    "G7",
+    "C7",
+    "Abdim",
+    "Cm7",
+    "Fm7",
+    "Ab7",
+    "C7sus4",
+    "F#7",
+    "F#7sus4",
+    "E6",
+    "F7",
+    "Fm7",
+    "Abdim",
+    "Cm7",
+    "Fm7",
+    "Abdim",
+    "AbM7",
+    "C7sus4",
+    "C7",
+    "C7sus4",
+    "C7",
+    "Fm7",
+    "Abdim",
+    "G7",
+    "Gm7",
+    "Gb7",
+    "EM7(b5)",
+    "Fdim",
+    "Bb7sus4",
+    "Bb7",
+    "Cm7",
+    "G7",
+    "Gm7",
+    "Fm7",
+    "Ddim",
+    "F#7",
+    "Fm7",
+    "C7sus4",
+    "C7",
+    "Fm6",
+    "Ab7",
+    "G7",
+    "Cm",
+    "Abdim",
+    "G7sus4",
+    "Fdim",
+    "Gm7",
+    "Cm"
    ],
    "chordsApprox": true,
    "style": null,
@@ -47213,7 +47769,60 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "Bm",
+    "Em7",
+    "A7sus4",
+    "A7",
+    "Am7",
+    "Bm7",
+    "F#7",
+    "B7sus4",
+    "B7",
+    "Em",
+    "Am7",
+    "B7",
+    "CM7",
+    "A7",
+    "Bm7",
+    "E7sus4",
+    "E7",
+    "D7",
+    "F#7",
+    "B7sus4",
+    "Em",
+    "A7sus4",
+    "G7",
+    "F#7",
+    "Bm7",
+    "Em7",
+    "Am7(b5)",
+    "A7",
+    "Am7",
+    "G7",
+    "Cm6",
+    "CM7",
+    "Bm7",
+    "E7",
+    "Am7",
+    "A7sus4",
+    "A7",
+    "D7sus4",
+    "D7",
+    "GM7",
+    "B7",
+    "Em",
+    "Am",
+    "Bm7",
+    "G7",
+    "Em7",
+    "B7",
+    "Em",
+    "A7sus4",
+    "Em",
+    "D7",
+    "G7"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": "Solo Tribute",
@@ -47225,7 +47834,14 @@
     310,
     311,
     312,
-    313
+    313,
+    314,
+    315,
+    316,
+    317,
+    318,
+    319,
+    320
    ]
   },
   {
@@ -47268,7 +47884,76 @@
     "Eb7sus4",
     "Eb7",
     "Am7",
-    "D7"
+    "D7",
+    "G7",
+    "C7",
+    "Fm",
+    "Dm",
+    "Cm",
+    "Ab7",
+    "F/G",
+    "Fm6/C",
+    "F7",
+    "Fm7",
+    "Bbm7",
+    "Eb7",
+    "Am7",
+    "D7",
+    "Gm7(b5)",
+    "Db7",
+    "Cm",
+    "Am7(b5)",
+    "D7",
+    "F/G",
+    "Abm7",
+    "Fm7(b5)",
+    "Ebm7",
+    "Bm7",
+    "C7",
+    "Am7",
+    "D7",
+    "G7",
+    "Fm7",
+    "Dm6",
+    "Db7",
+    "Am7(b5)",
+    "F/G",
+    "Cm",
+    "Bbm7",
+    "AbM7",
+    "Am7",
+    "D7",
+    "G7",
+    "C7sus4",
+    "C7",
+    "Fm",
+    "G7sus4",
+    "F/G",
+    "Fm7",
+    "Gm7(b5)",
+    "Fm7",
+    "Cm",
+    "Am7(b5)",
+    "D7",
+    "G7sus4",
+    "Bbm7",
+    "Ebm7",
+    "Bm7",
+    "D7",
+    "Gm",
+    "Cm",
+    "F/C",
+    "Am7",
+    "D7",
+    "G7",
+    "C7sus4",
+    "C7",
+    "Fm",
+    "Dm6",
+    "Db7",
+    "Cm",
+    "Am7(b5)",
+    "G7sus4"
    ],
    "chordsApprox": true,
    "style": null,
@@ -47328,7 +48013,18 @@
     "Am7",
     "D7",
     "C7",
-    "AM"
+    "AM",
+    "D7",
+    "C7",
+    "Dm7",
+    "D7sus4",
+    "D7",
+    "G7",
+    "Am7",
+    "C7sus4",
+    "Am",
+    "C7",
+    "Gm7"
    ],
    "chordsApprox": true,
    "style": null,
@@ -47407,7 +48103,36 @@
     "C7sus4",
     "C7",
     "Abdim",
-    "Gm7"
+    "Gm7",
+    "Am",
+    "D7",
+    "G7sus4",
+    "G7",
+    "Edim",
+    "Am7",
+    "Abdim",
+    "Gm7",
+    "Bdim",
+    "BbM7(5)",
+    "Adim",
+    "C7sus4",
+    "C7",
+    "Em",
+    "Edim",
+    "Am7",
+    "Abdim",
+    "Gm7",
+    "E7sus4",
+    "E7",
+    "E7",
+    "Am",
+    "D7sus4",
+    "D7",
+    "G7sus4",
+    "G7",
+    "C7sus4",
+    "Ddim",
+    "C7"
    ],
    "chordsApprox": true,
    "style": null,
@@ -47481,7 +48206,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "F5"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": "\"Tokyo Solo\"",
@@ -47575,7 +48302,9 @@
    "sortTitle": "all the things you are",
    "extraPages": [
     390,
-    391
+    391,
+    392,
+    393
    ]
   },
   {
@@ -47593,7 +48322,11 @@
     "F7(#5)",
     "Eb7sus4",
     "F7(69)",
-    "Amaj7(#5)"
+    "Amaj7(#5)",
+    "Emaj",
+    "C+7",
+    "E7",
+    "Amaj"
    ],
    "chordsApprox": true,
    "style": null,
@@ -47622,6 +48355,93 @@
     "Fm7",
     "Dm7",
     "D7",
+    "G7",
+    "Gm7",
+    "Cm7",
+    "F7",
+    "Cm7",
+    "F7",
+    "Gm7",
+    "D7",
+    "A7",
+    "G7",
+    "Cm7",
+    "F7",
+    "Fm7",
+    "A7",
+    "Dm7",
+    "Gm7",
+    "C7",
+    "D7",
+    "G7",
+    "Cm7",
+    "F7",
+    "Dm7",
+    "D7",
+    "G7",
+    "Cm7",
+    "A7",
+    "Cm7",
+    "F7",
+    "Fm7",
+    "Dm7",
+    "GM7",
+    "D7",
+    "G7",
+    "Cm7",
+    "Cm7",
+    "F7",
+    "Fm7",
+    "Bb7",
+    "EbMaj7",
+    "Ab7",
+    "BbMaj7",
+    "A7",
+    "Dm7",
+    "Bbm7",
+    "Eb7",
+    "FMaj7",
+    "D7",
+    "G7",
+    "Cm7",
+    "F7",
+    "Fm7",
+    "Bb7",
+    "EbMaj7",
+    "Ab7",
+    "BbMaj7",
+    "A7",
+    "Dm7",
+    "Bbm7",
+    "Eb7",
+    "F7",
+    "Fm7",
+    "Bb7",
+    "EbMaj7",
+    "Ab7",
+    "BbMaj7",
+    "A7",
+    "Dm7",
+    "Bbm7",
+    "Eb7",
+    "FMaj7",
+    "D7",
+    "Cm7",
+    "F7",
+    "Bb7",
+    "EbMaj7",
+    "Ab7",
+    "BbMaj7",
+    "A7",
+    "Bbm7",
+    "Eb7",
+    "FMaj7",
+    "EbMaj7",
+    "BbMaj7",
+    "A7",
+    "FMaj7",
+    "D7",
+    "Ab7",
     "G7"
    ],
    "chordsApprox": true,
@@ -47802,7 +48622,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "BM"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": "Bye Bye Blackbird",
@@ -47844,7 +48666,31 @@
     "Bdim",
     "F/C",
     "A7(69)",
-    "D7"
+    "D7",
+    "F/C",
+    "D7",
+    "G7",
+    "A7(69)",
+    "G7",
+    "Gm",
+    "F/C",
+    "D7",
+    "Eb7",
+    "G7",
+    "Gm",
+    "D7",
+    "A7(9)",
+    "Eb7",
+    "Bdim",
+    "F/C",
+    "C7",
+    "A7(69)",
+    "Eb7",
+    "G7",
+    "A7",
+    "A7(69)",
+    "D7",
+    "Gm"
    ],
    "chordsApprox": true,
    "style": null,
@@ -47900,6 +48746,24 @@
     "BbMaj7",
     "EbMaj7",
     "Gm7",
+    "Fm7",
+    "BbMaj7",
+    "EbMaj7",
+    "Gm7",
+    "Cm7",
+    "Cm7",
+    "BbMaj7",
+    "EbMaj7",
+    "Gm7",
+    "Cm7",
+    "BbMaj7",
+    "EbMaj7",
+    "Gm7",
+    "Fm7",
+    "Cm7",
+    "EbMaj7",
+    "Gm7",
+    "BbMaj7",
     "Fm7"
    ],
    "chordsApprox": true,
@@ -47949,7 +48813,9 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "B7"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": "Tokyo '96 (Trio Concert DVD)",
@@ -47976,7 +48842,26 @@
     "Cm7",
     "BbMaj7",
     "EbMaj7",
-    "Gm7"
+    "Gm7",
+    "Cm7",
+    "EbMaj7",
+    "Gm7",
+    "BbMaj7",
+    "Cm7",
+    "BbMaj7",
+    "EbMaj7",
+    "Gm7",
+    "Cm7",
+    "BbMaj7",
+    "EbMaj7",
+    "Gm7",
+    "Cm7",
+    "BbMaj7",
+    "EbMaj7",
+    "Gm7",
+    "EbMaj7",
+    "Gm7",
+    "BbMaj7"
    ],
    "chordsApprox": true,
    "style": null,
@@ -48027,7 +48912,9 @@
    "keySource": null,
    "chords": [
     "Gm/F",
-    "Dmi"
+    "Dmi",
+    "G+",
+    "Cm"
    ],
    "chordsApprox": true,
    "style": null,
@@ -48052,7 +48939,61 @@
    "keySig": null,
    "keyConfidence": null,
    "keySource": null,
-   "chords": [],
+   "chords": [
+    "G7",
+    "C7",
+    "Em",
+    "Fm",
+    "Do",
+    "Cm7",
+    "F7",
+    "Fm",
+    "C7",
+    "G7",
+    "Fm",
+    "C7",
+    "Em",
+    "G7",
+    "C7",
+    "Fm",
+    "Cm7",
+    "G7",
+    "Cm7",
+    "Fm",
+    "C7",
+    "Fm",
+    "Em",
+    "C7",
+    "C7",
+    "G7",
+    "Cm7",
+    "F7",
+    "G7",
+    "Cm7",
+    "Cm7",
+    "F7",
+    "G7",
+    "C7",
+    "Em",
+    "Fm",
+    "G7",
+    "C7",
+    "C7",
+    "G7",
+    "Fm",
+    "Fm",
+    "G7",
+    "Em",
+    "Gmin",
+    "C7",
+    "Fmin7",
+    "Dmin",
+    "CMaj7",
+    "G7",
+    "Cmin7",
+    "Emin7",
+    "CMaj7"
+   ],
    "chordsApprox": true,
    "style": null,
    "album": "Whisper Not",
@@ -48074,7 +49015,11 @@
     496,
     497,
     498,
-    499
+    499,
+    500,
+    501,
+    502,
+    503
    ]
   },
   {
@@ -48088,6 +49033,14 @@
    "keyConfidence": null,
    "keySource": null,
    "chords": [
+    "Eb6",
+    "Cm/F",
+    "Ebdim",
+    "Cm",
+    "F7sus",
+    "F7",
+    "Bbdimsus",
+    "Bb7(b9)",
     "Eb6"
    ],
    "chordsApprox": true,
