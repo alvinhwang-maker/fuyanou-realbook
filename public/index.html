@@ -690,7 +690,7 @@
       tags = tags.concat(m.tags);
       notes.push(m.note || '', m.name || '');
     });
-    return [s.title, s.composer, s.key, s.style, s.keySig, s.bookLabel, s.book,
+    return [s.title, s.composer, s.key, s.style, s.album, s.keySig, s.bookLabel, s.book,
             tags.join(' '), notes.join(' '),
             (SHOW_CHORDS ? (s.chords || []).join(' ') : '')].map(norm).join(' | ');
   }
@@ -766,7 +766,7 @@
         '<div style="flex:1;min-width:0">'+
           '<div class="nm">'+esc(s.title)+(mk.length ? '<span class="notemark">✎</span>' : '')+'</div>'+
           '<p class="meta">'+[esc(s.composer||t('composerUnknown')), esc(s.key||t('keyUnknown'))].join(' · ')+'</p>'+
-          '<div class="bk">'+esc(s.bookLabel||'')+'</div>'+
+          '<div class="bk">'+esc([s.bookLabel, s.album].filter(Boolean).join(' · '))+'</div>'+
           (SHOW_CHORDS && s.chords && s.chords.length ? '<div class="chords">'+esc((s.chordsApprox ? '≈ ' : '') + s.chords.slice(0,14).join(' '))+'</div>' : '')+
           (mk.length ? '<div class="marks">'+shown.map(function(m){ return markBlock(m, false); }).join('')+
              (extra > 0 ? '<p class="mnote" style="opacity:.65">+' + extra + '</p>' : '')+'</div>' : '')+
@@ -800,7 +800,7 @@
   function renderSheet(s){
     var keep = stage.scrollTop;
     vtitle.textContent = s.title;
-    vsub.textContent = [s.bookLabel, s.composer, s.key, pageLabel(s, true)].filter(Boolean).join(' · ');
+    vsub.textContent = [s.bookLabel, s.album, s.composer, s.key, pageLabel(s, true)].filter(Boolean).join(' · ');
     var pages = songPages(s), html = '';
     for(var k = 0; k < pages.length; k++){
       if(k > 0){
